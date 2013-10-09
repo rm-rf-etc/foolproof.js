@@ -2,6 +2,10 @@
 Bulletproof.js
 ==============
 
+
+### not available on npm just yet...
+
+
 Bulletproof.js is a group of helper functions for type checking.
 You can pass any object to a bulletproof helper function and be
 certain it will never throw a nasty error since typeof is the first
