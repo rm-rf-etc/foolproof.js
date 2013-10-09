@@ -2,6 +2,9 @@
 var expect = require('expect.js')
 var check = its = it
 
+function Thing (){ return this }
+var newThing = new Thing()
+
 ;(function(){
   require('../bulletproof').apply(this)
 
@@ -38,6 +41,7 @@ var check = its = it
       expect( typeOf('stuff') ).to.be('string')
       expect( typeOf('') ).to.be('string')
       expect( typeOf({}) ).to.be('object')
+      expect( typeOf(newThing) ).to.be('object')
       expect( typeOf(NaN) ).to.be('NaN')
       expect( typeOf(function(){}) ).to.be('function')
       expect( typeOf([]) ).to.be('array')
@@ -50,6 +54,7 @@ var check = its = it
       expect( isString( 'stuff' ) ).to.be(true)
       expect( isString( '' ) ).to.be(true)
       expect( isString({}) ).to.be(false)
+      expect( isString(newThing) ).to.be(false)
       expect( isString(NaN) ).to.be(false)
       expect( isString(function(){}) ).to.be(false)
       expect( isString([]) ).to.be(false)
@@ -63,6 +68,7 @@ var check = its = it
     })
     check('isType returns true or false', function(){
       expect( isType({}, 'object') ).to.be(true)
+      expect( isType(newThing, 'object') ).to.be(true)
       expect( isType('', 'string') ).to.be(true)
       expect( isType('4', 'string') ).to.be(true)
       expect( isType(function(){}, 'function') ).to.be(true)
@@ -76,6 +82,7 @@ var check = its = it
       expect( isType(new RegExp('ab'), 'regex') ).to.be(true)
 
       expect( isType({}, null) ).to.be(false)
+      expect( isType(newThing, null) ).to.be(false)
       expect( isType(function(){}, 'object') ).to.be(false)
       expect( isType([], '') ).to.be(false)
       expect( isType(3, 'string') ).to.be(false)
@@ -87,6 +94,7 @@ var check = its = it
       expect( isType(new RegExp('ab'), 'object') ).to.be(false)
 
       expect( isType('', {}) ).to.be(false)
+      expect( isType('', newThing) ).to.be(false)
       expect( isType('', function(){}) ).to.be(false)
       expect( isType('', []) ).to.be(false)
       expect( isType('', 3) ).to.be(false)
@@ -106,6 +114,7 @@ var check = its = it
       expect( isUndefined('') ).to.be(false)
       expect( isUndefined('4') ).to.be(false)
       expect( isUndefined({}) ).to.be(false)
+      expect( isUndefined(newThing) ).to.be(false)
       expect( isUndefined(function(){}) ).to.be(false)
       expect( isUndefined([]) ).to.be(false)
       expect( isUndefined(3) ).to.be(false)
@@ -124,6 +133,7 @@ var check = its = it
       expect( isFunction((void 0)) ).to.be(false)
       expect( isFunction(0) ).to.be(false)
       expect( isFunction({}) ).to.be(false)
+      expect( isFunction(newThing) ).to.be(false)
       expect( isFunction([]) ).to.be(false)
       expect( isFunction(3) ).to.be(false)
       expect( isFunction(NaN) ).to.be(false)
@@ -133,6 +143,7 @@ var check = its = it
     })
     check('isObject returns true or false', function(){
       expect( isObject( {} ) ).to.be(true)
+      expect( isObject(newThing) ).to.be(true)
 
       expect( isObject('') ).to.be(false)
       expect( isObject('4') ).to.be(false)
@@ -155,6 +166,7 @@ var check = its = it
       expect( isRegex( '' ) ).to.be(false)
       expect( isRegex( '4' ) ).to.be(false)
       expect( isRegex( {} ) ).to.be(false)
+      expect( isRegex(newThing) ).to.be(false)
       expect( isRegex(undefined) ).to.be(false)
       expect( isRegex(void 0) ).to.be(false)
       expect( isRegex((void 0)) ).to.be(false)
@@ -173,6 +185,7 @@ var check = its = it
       expect( isArray(/$./g) ).to.be(false)
       expect( isArray(new RegExp('ab')) ).to.be(false)
       expect( isArray( {} ) ).to.be(false)
+      expect( isArray(newThing) ).to.be(false)
       expect( isArray(undefined) ).to.be(false)
       expect( isArray(void 0) ).to.be(false)
       expect( isArray((void 0)) ).to.be(false)
@@ -190,6 +203,7 @@ var check = its = it
       expect( isNull(/$./g) ).to.be(false)
       expect( isNull(new RegExp('ab')) ).to.be(false)
       expect( isNull( {} ) ).to.be(false)
+      expect( isNull(newThing) ).to.be(false)
       expect( isNull(undefined) ).to.be(false)
       expect( isNull(void 0) ).to.be(false)
       expect( isNull((void 0)) ).to.be(false)
@@ -204,6 +218,7 @@ var check = its = it
       expect( isTruthy(/$./g) ).to.be(true)
       expect( isTruthy(new RegExp('ab')) ).to.be(true)
       expect( isTruthy( {} ) ).to.be(true)
+      expect( isTruthy( newThing ) ).to.be(true)
       expect( isTruthy(function(){}) ).to.be(true)
       expect( isTruthy([]) ).to.be(true)
       expect( isTruthy(3) ).to.be(true)
@@ -231,6 +246,7 @@ var check = its = it
       expect( isFalsey(/$./g) ).to.be(false)
       expect( isFalsey(new RegExp('ab')) ).to.be(false)
       expect( isFalsey( {} ) ).to.be(false)
+      expect( isFalsey( newThing ) ).to.be(false)
       expect( isFalsey(function(){}) ).to.be(false)
       expect( isFalsey([]) ).to.be(false)
       expect( isFalsey(3) ).to.be(false)
@@ -246,6 +262,7 @@ var check = its = it
       expect( notUndefined(/$./g) ).to.be(true)
       expect( notUndefined(new RegExp('ab')) ).to.be(true)
       expect( notUndefined( {} ) ).to.be(true)
+      expect( notUndefined( newThing ) ).to.be(true)
       expect( notUndefined(function(){}) ).to.be(true)
       expect( notUndefined([]) ).to.be(true)
       expect( notUndefined(3) ).to.be(true)
@@ -260,6 +277,7 @@ var check = its = it
       expect( notFunction(/$./g) ).to.be(true)
       expect( notFunction(new RegExp('ab')) ).to.be(true)
       expect( notFunction( {} ) ).to.be(true)
+      expect( notFunction( newThing ) ).to.be(true)
       expect( notFunction(undefined) ).to.be(true)
       expect( notFunction(void 0) ).to.be(true)
       expect( notFunction((void 0)) ).to.be(true)
@@ -271,6 +289,7 @@ var check = its = it
     })
     check('notObject returns true or false', function(){
       expect( notObject( {} ) ).to.be(false)
+      expect( notObject( newThing ) ).to.be(false)
 
       expect( notObject('') ).to.be(true)
       expect( notObject('4') ).to.be(true)
@@ -293,6 +312,7 @@ var check = its = it
       expect( notString(/$./g) ).to.be(true)
       expect( notString(new RegExp('ab')) ).to.be(true)
       expect( notString( {} ) ).to.be(true)
+      expect( notString( newThing ) ).to.be(true)
       expect( notString(undefined) ).to.be(true)
       expect( notString(void 0) ).to.be(true)
       expect( notString((void 0)) ).to.be(true)
@@ -310,6 +330,7 @@ var check = its = it
       expect( notRegex( '' ) ).to.be(true)
       expect( notRegex( '4' ) ).to.be(true)
       expect( notRegex( {} ) ).to.be(true)
+      expect( notRegex( newThing ) ).to.be(true)
       expect( notRegex(undefined) ).to.be(true)
       expect( notRegex(void 0) ).to.be(true)
       expect( notRegex((void 0)) ).to.be(true)
@@ -328,6 +349,7 @@ var check = its = it
       expect( notArray(/$./g) ).to.be(true)
       expect( notArray(new RegExp('ab')) ).to.be(true)
       expect( notArray( {} ) ).to.be(true)
+      expect( notArray( newThing ) ).to.be(true)
       expect( notArray(undefined) ).to.be(true)
       expect( notArray(void 0) ).to.be(true)
       expect( notArray((void 0)) ).to.be(true)
@@ -343,6 +365,7 @@ var check = its = it
       expect( notNull(/$./g) ).to.be(true)
       expect( notNull(new RegExp('ab')) ).to.be(true)
       expect( notNull( {} ) ).to.be(true)
+      expect( notNull( newThing ) ).to.be(true)
       expect( notNull(undefined) ).to.be(true)
       expect( notNull(void 0) ).to.be(true)
       expect( notNull((void 0)) ).to.be(true)
@@ -355,7 +378,8 @@ var check = its = it
     check('notType returns true or false', function(){
       expect( notType( /$./g,              null ) ).to.be(true)
       expect( notType( new RegExp('ab'),   null ) ).to.be(true)
-      expect( notType(  {} ,               null ) ).to.be(true)
+      expect( notType( {},                 null ) ).to.be(true)
+      expect( notType( newThing,           null ) ).to.be(true)
       expect( notType( undefined,          null ) ).to.be(true)
       expect( notType( 0,                  null ) ).to.be(true)
       expect( notType( void 0,             null ) ).to.be(true)
