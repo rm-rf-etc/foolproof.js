@@ -1,4 +1,3 @@
-
 Bulletproof.js
 ==============
 
@@ -43,6 +42,6 @@ var App = (function(){
   alert( isString('this is a demo') );
 
   return this
-});
+})()
 ```
 
