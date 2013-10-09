@@ -10,6 +10,12 @@ Prototype.toString is used to provide more specific object type
 info. Try typeOf() on any object.
 
 
+### Available from npm
+`$ npm install foolproof`
+
+will add it to your node_modules folder.
+
+
 How to Include Foolproof.js
 -----------------------------
 
@@ -20,9 +26,9 @@ feature.
 You could use it like this:
 
 ```js
-var bp = require('foolproof')()
+var fp = require('foolproof')()
 
-console.log( bp.isString('this is a demo') )
+console.log( fp.isString('this is a demo') )
 ```
 
 But it was intended to make the helper functions available natively
