@@ -1,18 +1,18 @@
 {
-  "name": "bulletproof.js",
+  "name": "foolproof",
   "version": "0.0.0",
   "author": "Rob Christian",
-  "description": "Bulletproof type-checking and helper functions.",
+  "description": "Foolproof type-checking and helper functions.",
   "scripts": {
     "start": "node ./bin/http-server",
     "test": "vows --spec --isolate",
     "predeploy": "echo This will be run before deploying the app",
     "postdeploy": "echo This will be run after deploying the app"
   },
-  "main": "./bulletproof.js",
+  "main": "./foolproof.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rm-rf-etc/bulletproof.git"
+    "url": "https://github.com/rm-rf-etc/foolproof.git"
   },
   "keywords": [
     "type-checking",
