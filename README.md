@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-bulletproof.js
-==============
-=======
 
 Bulletproof.js
 ==============
@@ -15,14 +11,34 @@ Prototype.toString is used to provide more specific object type
 info. Try typeOf() on any object.
 
 
-Usage
------
+How to Include Bulletproof.js
+-----------------------------
 
+Bulletproof gives you a couple options. Mainly we want to make it
+easy to use the helper functions as you would any other native JS
+feature.
+
+You could use it like this:
 
 ```js
-typeOf({})
+var bp = require('bulletproof')()
+
+alert( bp.isString('this is a demo') );
 ```
 
+But it was intended to make the helper functions available natively
+in your app's context, like this:
 
-### Title
->>>>>>> updated test.js
+```js
+var App = (function(){
+
+  require('bulletproof').apply(this);
+
+  // does stuff...
+
+  alert( isString('this is a demo') );
+
+  return this
+});
+```
+
