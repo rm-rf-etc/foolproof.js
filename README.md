@@ -1,10 +1,6 @@
 Foolproof.js
 ==============
 
-
-### not available on npm just yet...
-
-
 Foolproof.js is a group of helper functions for type checking.
 You can pass any object to a foolproof helper function and be
 certain it will never throw a nasty error since typeof is the first
@@ -26,7 +22,7 @@ You could use it like this:
 ```js
 var bp = require('foolproof')()
 
-alert( bp.isString('this is a demo') );
+console.log( bp.isString('this is a demo') )
 ```
 
 But it was intended to make the helper functions available natively
@@ -35,13 +31,12 @@ in your app's context, like this:
 ```js
 var App = (function(){
 
-  require('foolproof').apply(this);
+  require('foolproof').apply(this)
 
   // does stuff...
 
-  alert( isString('this is a demo') );
+  console.log( isString('this is a demo') )
 
   return this
 })()
 ```
-
