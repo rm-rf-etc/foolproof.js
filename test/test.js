@@ -6,7 +6,7 @@ function Thing (){ return this }
 var newThing = new Thing()
 
 ;(function(){
-  require('../bulletproof').apply(this)
+  require('../foolproof').apply(this)
 
   describe('helpers', function(){
     check('all properties are functions.', function(){
