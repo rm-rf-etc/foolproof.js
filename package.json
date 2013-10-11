@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "author": "Rob Christian",
   "description": "Foolproof type-checking and helper functions.",
-  },
   "main": "./foolproof.js",
   "repository": {
     "type": "git",
