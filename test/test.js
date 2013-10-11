@@ -5,6 +5,7 @@ var check = its = it
 function Thing (){ return this }
 var newThing = new Thing()
 
+
 ;(function(){
   require('../foolproof').apply(this)
 
@@ -390,6 +391,37 @@ var newThing = new Thing()
       expect( notType( NaN,                null ) ).to.be(true)
       expect( notType( null,             void 0 ) ).to.be(true)
     })
+    check('nameOf matches expected output with case sensativity', function(){
+      expect( nameOf(/$./g) ).to.not.be('regexp')
+      expect( nameOf(new RegExp('ab')) ).to.not.be('regexp')
+      expect( nameOf(newThing) ).to.not.be('thing')
+      expect( nameOf({}) ).to.not.be('object')
+      expect( nameOf(1) ).to.not.be('number')
+      expect( nameOf(0) ).to.not.be('number')
+      expect( nameOf(NaN) ).to.not.be('number')
+      expect( nameOf('') ).to.not.be('string')
+      expect( nameOf('whatever') ).to.not.be('string')
+      expect( nameOf(function(){}) ).to.not.be('function')
+      expect( nameOf([]) ).to.not.be('array')
+      expect( nameOf(null) ).to.not.be('null')
+      expect( nameOf(void 0) ).to.not.be('undefined')
+      expect( nameOf(undefined) ).to.not.be('undefined')
+
+      expect( nameOf(/$./g) ).to.be('RegExp')
+      expect( nameOf(new RegExp('ab')) ).to.be('RegExp')
+      expect( nameOf(newThing) ).to.be('Thing')
+      expect( nameOf({}) ).to.be('Object')
+      expect( nameOf(1) ).to.be('Number')
+      expect( nameOf(0) ).to.be('Number')
+      expect( nameOf(NaN) ).to.be('Number')
+      expect( nameOf('') ).to.be('String')
+      expect( nameOf('whatever') ).to.be('String')
+      expect( nameOf(function(){}) ).to.be('Function')
+      expect( nameOf([]) ).to.be('Array')
+      expect( nameOf(null) ).to.be('Null')
+      expect( nameOf(void 0) ).to.be('Undefined')
+      expect( nameOf(undefined) ).to.be('Undefined')
+    })
   })
 
 
@@ -425,7 +457,7 @@ var newThing = new Thing()
       expect( function(){ standardizePath('') } ).to.throwError(/^Path specified is invalid$/g)
     })
   })
-  describe.only('isValidPath', function(){
+  describe('isValidPath', function(){
     it('returns true or false, or throws error.', function(){
       expect( isValidPath('/stuff/places/things/') ).to.be(true)
 

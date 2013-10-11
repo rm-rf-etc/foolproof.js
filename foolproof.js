@@ -5,33 +5,56 @@
  */
 module.exports = function(){
 
+  var error_levels = {0:'error', 2:'']
   /**
    * @method failWhen
    * @param {Boolean} condition
-   * @param {Array} args
    * @param {String} msg
+   * @param {Array} args
    * @param {String} level
    */
    // @throws {Error}
   this.failWhen = function failWhen (condition, msg, args, level) {
     if (isTruthy(condition)) {
-      var msg = (isString(msg)) ? msg : 'Helper received invalid arguments.'
-      var level = (isString(level)) ? level : 'warn'
+      var msg = (isString(msg)) ? msg : 'Error occurred in '+nameOf(this)
+      var level = (isString(level)) ? level.toLowerCase() : 'warn'
       // log(msg, args, level)
       throw new Error(msg, args)
     }
+    return true
   }
 
   /**
    * @method inArray
-   * @param {String}
+   * @param {any object} needle
+   * @param {Array} haystack
    * @return {Boolean}
    */
   this.inArray = function inArray (needle, haystack) {
+    if (failWhen(notArray(haystack), 'inArray requires haystack be Array.', arguments))
+      return false
+
     for (var key in haystack)
       if (haystack[key] === needle) return true
 
     return false
+  }
+
+  /**
+   * @method nameOf
+   * @param {String} thing
+   * @return {String} name of thing
+   */
+  this.nameOf = function nameOf (thing) {
+
+    if ( isFunction(thing) )
+      return /^function\s(\w+?)\(\).*/g.exec( thing.toString() )[1]
+
+    if ( notNull(thing) && notUndefined(thing) )
+      return thing.constructor.name
+    
+    else
+      return (isNull(thing)) ? 'Null' : 'Undefined'
   }
 
   /**
@@ -222,12 +245,12 @@ module.exports = function(){
   }
 
   /**
-   * @method saveAsLocal
+   * @method saveThese
    * @param {Array or String} args
    * @param {Array} params
    */
-  this.saveAsLocal = function saveAsLocal (args, params) {
-    failWhen( !isString(args) && !isObject(args) && !isArray(params), type, arguments )
+  this.saveThese = function saveThese (args, params) {
+    failWhen( notString(args) && notObject(args) && notArray(params), type, arguments )
 
     if ( isString(args) && isArray(params) )
       if (inArray(args, params))
