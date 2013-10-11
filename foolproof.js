@@ -13,7 +13,7 @@ module.exports = function(){
    * @param {String} level
    */
    // @throws {Error}
-  this.failWhen = function failWhen (condition, args, msg, level) {
+  this.failWhen = function failWhen (condition, msg, args, level) {
     if (isTruthy(condition)) {
       var msg = (isString(msg)) ? msg : 'Helper received invalid arguments.'
       var level = (isString(level)) ? level : 'warn'
@@ -279,7 +279,10 @@ module.exports = function(){
    * @param {String} path
    * @return {Boolean}
    */
-  this.isFile    = function isFile(path){          return fs.lstatSync( path ).isFile()                }
+  this.isFile = function isFile(path) {
+    failWhen( notString(path), 'ifFile requires a string!', path )
+    return fs.lstatSync( path ).isFile()
+  }
   /**
    * @method filesHere
    * @param {String} path
@@ -299,6 +302,18 @@ module.exports = function(){
    * @return {String}
    */
   this.fileName  = function fileName(path){        return pth.basename(path, type.replace(/^\b/,'.'))  }
+  /**
+   * @method fileName
+   * @param {String} path
+   * @return {String}
+   */
+  this.loadFile  = function fileName(file, encoding) {
+    var encode = (isString(encoding)) ? encoding : 'utf8'
+    if (isFile(file))
+      return fs.readFileSync(file, encoding)
+    else
+      return null
+  }
 
   return this
 }
