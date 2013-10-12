@@ -1,33 +1,41 @@
 Foolproof.js
 ==============
 
+## Status: Beta
+
+Please do not rely on this package as it is still in development
+and will likely lead to unexpected behavior until further testing.
+
+## Description
+
 Foolproof.js is a group of helper functions for type checking.
-You can pass any object to a foolproof helper function and be
-certain it will never throw a nasty error since typeof is the first
-check that is always done on any value given.
+The goal is to simplify type checking, increase stability for
+node applications, and allow for graceful handling of unexpected
+conditions.
 
-### Functions:
+## Functions:
 
-* inArray
-* typeOf
-* isType
-* isUndefined
-* isFunction
-* isObject
-* isString
-* isRegex
-* isArray
-* isNull
-* isTruthy
-* isFalsey
-* notType
-* notUndefined
-* notFunction
-* notObject
-* notString
-* notRegex
-* notArray
-* notNull
+* new: ƒ(typeof var) - the fail-fast method, always use with typeof.
+* inArray()
+* typeOf()
+* isType()
+* isUndefined()
+* isFunction()
+* isObject()
+* isString()
+* isRegex()
+* isArray()
+* isNull()
+* isTruthy()
+* isFalsey()
+* notType()
+* notUndefined()
+* notFunction()
+* notObject()
+* notString()
+* notRegex()
+* notArray()
+* notNull()
 
 
 
