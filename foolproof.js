@@ -1,43 +1,119 @@
 
 /**
- * @module Bulletproof
+ * @module foolproof
  * @class Exports
  */
 module.exports = function(){
 
   // Level 0 is the worst possible error level. 1 is default for really bad.
-  ReferenceError.prototype.level = 1
-  var log = {
-    takeAction: function(){ return false }
-  }
+  ReferenceError.prototype.lvl = 1
+
+
 
   /**
-   * Allows you to specify a default logger function which will be invoked on every new error.
-   * @method useLogger
-   * @param func {Function}
+   * Allows custom error handling.
+   * @class SystemLogger
+   * @for Exports
    */
-  this.useLogger = function useLogger (func) {
-    log.takeAction = func
-  }
+  this.SystemLogger = (function(){
+
+    /*`'~.,.~'`*\
+       private
+    \*,.~'`'~.,*/
+
+    var func = CaughtOnCamera
+
+    function CaughtOnCamera (err) {
+      console.log('Level: '+err.lvl, err, err.stack)
+      throw err
+    }
+
+    /*`'~.,.~'`*\
+       public
+    \*,.~'`'~.,*/
+
+    /**
+     * Call this when everything goes really wrong.
+     * @method EpicFail
+     * @for SystemLogger
+     * @param msg {String} text that will go into the error.
+     * @param lvl {Number} level value that will go into the error.
+     * @param type {Error} optional, include if you don't want a ReferenceError.
+     */
+    function EpicFail (msg, lvl, type) {
+      var msg = msg || 'No error message was defined for this condition.'
+
+      if (typeof type !== 'undefined')
+        var err = new type(msg)
+      else
+        var err = new ReferenceError(msg)
+
+      err.lvl = lvl || 1
+
+      func(err)
+    }
+
+    /**
+     * @method Use
+     * @for SystemLogger
+     * @param alternate {Function} Set a custom error handler. Will receive an Error object.
+     */
+    function Use (alternate) {
+      func = alternate
+    }
+
+    return {
+      EpicFail: EpicFail,
+      Use: Use
+    }
+  })()
+
+
+
 
   /**
-   * alt+f on mac, this is the fail-fast system protection method. Always use with typeof like this: ƒ(typeof [var])
-   * @method ƒ
+   * This is the fail-fast system protection method. Always use with the typeof
+   * operator, like this: "ƒ(typeof [var])".
+   *
+   * OS X: alt+f. Windows: alt+159.
+   *
+   * @method ƒ(typeof
+   * @for Exports
    * @param enemy {Variable}
+   * @param msg {String}
+   * @param lvl {Number}
+   * @return {Boolean}
    */
-  this.ƒ = function ƒ (/*typeof*/ enemy) {
+  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl) {
     
-    if (enemy === 'undefined') {
-      if (log.takeAction() === false) {
-        throw new ReferenceError(msg).level = level
-      }
+    var msg = msg || ''
+    var lvl = lvl || 1
+
+    if ( enemy === 'undefined' ) {
+      SystemLogger.EpicFail(msg, lvl)
+      return false
     }
     else
-      return enemy
+      return true
+  }
+
+  /**
+   * Just a shorthand for (typeof x === 'undefined').
+   *
+   * OS X: alt+s. Windows: alt+0223.
+   *
+   * @method ß(typeof
+   * @for Exports
+   * @param thing {Variable}
+   * @return {Boolean}
+   */
+  this.ß = function ß (/*typeof*/ thing) {
+    return (thing === 'undefined')
   }
 
   /**
    * @method failWhen
+   * @for Exports
    * @param condition {Boolean}
    * @param msg {String}
    * @param args {Array}
@@ -57,6 +133,7 @@ module.exports = function(){
 
   /**
    * @method inArray
+   * @for Exports
    * @param needle {any object}
    * @param haystack {Array}
    * @return {Boolean}
@@ -73,6 +150,7 @@ module.exports = function(){
 
   /**
    * @method nameOf
+   * @for Exports
    * @param thing {String}
    * @return name {String} of thing
    */
@@ -90,6 +168,7 @@ module.exports = function(){
 
   /**
    * @method typeOf
+   * @for Exports
    * @param thing {String}
    * @return type {String} Lower case only.
    */
@@ -111,6 +190,7 @@ module.exports = function(){
 
   /**
    * @method isType
+   * @for Exports
    * @param thing {any object}
    * @param type {String}
    * @return {Boolean}
@@ -124,6 +204,7 @@ module.exports = function(){
 
   /**
    * @method isUndefined
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -131,6 +212,7 @@ module.exports = function(){
 
   /**
    * @method isFunction
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -138,6 +220,7 @@ module.exports = function(){
 
   /**
    * @method isObject
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -145,6 +228,7 @@ module.exports = function(){
 
   /**
    * @method isString
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -152,6 +236,7 @@ module.exports = function(){
 
   /**
    * @method isRegex
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -159,6 +244,7 @@ module.exports = function(){
 
   /**
    * @method isArray
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -166,6 +252,7 @@ module.exports = function(){
 
   /**
    * @method isNull
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -173,6 +260,7 @@ module.exports = function(){
 
   /**
    * @method isTruthy
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -180,6 +268,7 @@ module.exports = function(){
 
   /**
    * @method isFalsey
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -192,6 +281,7 @@ module.exports = function(){
 
   /**
    * @method notType
+   * @for Exports
    * @param thing {any object}
    * @param type {String}
    * @return {Boolean}
@@ -200,6 +290,7 @@ module.exports = function(){
 
   /**
    * @method notUndefined
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -207,6 +298,7 @@ module.exports = function(){
 
   /**
    * @method notFunction
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -214,6 +306,7 @@ module.exports = function(){
 
   /**
    * @method notObject
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -221,6 +314,7 @@ module.exports = function(){
 
   /**
    * @method notString
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -228,6 +322,7 @@ module.exports = function(){
 
   /**
    * @method notRegex
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -235,6 +330,7 @@ module.exports = function(){
 
   /**
    * @method notArray
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -242,6 +338,7 @@ module.exports = function(){
 
   /**
    * @method notNull
+   * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
@@ -250,6 +347,7 @@ module.exports = function(){
 
   /**
    * @method standardizePath
+   * @for Exports
    * @param path {any object} thing
    * @return {Boolean}
    */
@@ -267,6 +365,7 @@ module.exports = function(){
 
   /**
    * @method isValidPath
+   * @for Exports
    * @param path {String}
    * @return {Boolean}
    */
@@ -277,6 +376,7 @@ module.exports = function(){
 
   /**
    * Allows saving of external variables to local variables, by variable name.
+   * @for Exports
    * @method saveThese
    * @param thing {Object or Array}
    * @param list {Array} Is always an array of variable names to permit overwriting.
@@ -304,6 +404,7 @@ module.exports = function(){
 
   /**
    * @method urlParser
+   * @for Exports
    * @param regex {Regex}
    * @param url {String}
    * @param vars {Array}
@@ -334,6 +435,7 @@ module.exports = function(){
   // Prettier function names.
   /**
    * @method isFolder
+   * @for Exports
    * @param path {String}
    * @return {Boolean}
    */
@@ -341,6 +443,7 @@ module.exports = function(){
 
   /**
    * @method isFile
+   * @for Exports
    * @param path {String}
    * @return {Boolean}
    */
@@ -351,6 +454,7 @@ module.exports = function(){
   }
   /**
    * @method filesHere
+   * @for Exports
    * @param path {String}
    * @return {Array}
    */
@@ -358,6 +462,7 @@ module.exports = function(){
 
   /**
    * @method formPath
+   * @for Exports
    * @param path {String}
    * @param file {String}
    * @return {String}
@@ -366,6 +471,7 @@ module.exports = function(){
 
   /**
    * @method fileName
+   * @for Exports
    * @param path {String}
    * @return {String}
    */
@@ -373,6 +479,7 @@ module.exports = function(){
 
   /**
    * @method fileName
+   * @for Exports
    * @param path {String}
    * @return {String}
    */

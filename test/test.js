@@ -9,43 +9,101 @@ var newThing = new Thing()
 ;(function(){
   require('../foolproof').apply(this)
 
-  describe('helpers', function(){
-    check('all properties are functions.', function(){
-      expect( typeof failWhen ).to.be( 'function' )
-      expect( typeof inArray ).to.be( 'function' )
-      expect( typeof typeOf ).to.be( 'function' )
-      expect( typeof isType ).to.be( 'function' )
-      expect( typeof isUndefined ).to.be( 'function' )
-      expect( typeof isFunction ).to.be( 'function' )
-      expect( typeof isObject ).to.be( 'function' )
-      expect( typeof isString ).to.be( 'function' )
-      expect( typeof isRegex ).to.be( 'function' )
-      expect( typeof isArray ).to.be( 'function' )
-      expect( typeof isNull ).to.be( 'function' )
-      expect( typeof isTruthy ).to.be( 'function' )
-      expect( typeof isFalsey ).to.be( 'function' )
-      expect( typeof standardizePath ).to.be( 'function' )
-      expect( typeof isValidPath ).to.be( 'function' )
-      expect( typeof saveAsLocal ).to.be( 'function' )
-      expect( typeof urlParser ).to.be( 'function' )
-      expect( typeof isFolder ).to.be( 'function' )
-      expect( typeof isFile ).to.be( 'function' )
-      expect( typeof filesHere ).to.be( 'function' )
-      expect( typeof formPath ).to.be( 'function' )
-      expect( typeof fileName ).to.be( 'function' )
+  describe('Helpers',function(){
+    it('Created expected methods in this context.',function(){
+
+      expect( SystemLogger ).to.be.an( 'object' )
+
+      expect( ƒ ).to.be.a( 'function' )
+      expect( ß ).to.be.a( 'function' )
+      expect( failWhen ).to.be.a( 'function' )
+
+      expect( inArray ).to.be.a( 'function' )
+      expect( typeOf ).to.be.a( 'function' )
+      expect( isType ).to.be.a( 'function' )
+
+      expect( isFunction ).to.be.a( 'function' )
+      expect( isObject ).to.be.a( 'function' )
+      expect( isString ).to.be.a( 'function' )
+      expect( isRegex ).to.be.a( 'function' )
+      expect( isArray ).to.be.a( 'function' )
+      expect( isNull ).to.be.a( 'function' )
+      expect( isTruthy ).to.be.a( 'function' )
+      expect( isFalsey ).to.be.a( 'function' )
+
+      expect( notFunction ).to.be.a( 'function' )
+      expect( notObject ).to.be.a( 'function' )
+      expect( notString ).to.be.a( 'function' )
+      expect( notRegex ).to.be.a( 'function' )
+      expect( notArray ).to.be.a( 'function' )
+      expect( notNull ).to.be.a( 'function' )
+
+      expect( standardizePath ).to.be.a( 'function' )
+      expect( isValidPath ).to.be.a( 'function' )
+      expect( saveThese ).to.be.a( 'function' )
+      expect( urlParser ).to.be.a( 'function' )
+      expect( isFolder ).to.be.a( 'function' )
+      expect( isFile ).to.be.a( 'function' )
+      expect( filesHere ).to.be.a( 'function' )
+      expect( formPath ).to.be.a( 'function' )
+      expect( fileName ).to.be.a( 'function' )
+      /*
+      */
     })
   })
 
+  describe('SystemLogger',function(){
+    it('Exists as an object.',function(){
+      expect( SystemLogger ).to.be.an('object')
+    })
+    it('Has expected methods, Use() and EpicFail().',function(){
+      expect( SystemLogger ).to.have.property( 'Use' )
+      expect( SystemLogger ).to.have.property( 'EpicFail' )
+    })
+  })
 
-  describe('The fail-fast method',function(){
+  describe('ƒ(typeof, the fail-fast method',function(){
     it('can properly detect, handle, and throw reference errors.',function(){
-      expect( ƒ(typeof whatever) ).to.throwError()
+
+      SystemLogger.Use(function(){
+        throw new ReferenceError()
+      })
+
+      expect(function(){ ƒ(typeof whatever) }).to.throwError(function(e){
+        expect( e ).to.be.a(ReferenceError)
+        expect( e ).to.not.be.a(SyntaxError)
+      })
+      expect(function(){ ƒ(typeof undefined) }).to.throwError()
+      expect(function(){ ƒ('undefined') }).to.throwError()
+    })
+
+
+    it('invokes the predefined error handler.',function(done){
+      var msg = 'Send this out, expect() to get it back.'
+
+      function customErrorHandler (err) {
+        console.log('\nLevel: '+err.lvl, '\n'+err.stack)
+        expect( err ).to.be.a( ReferenceError )
+        expect( err.message ).to.be( msg )
+
+        done()
+      }
+
+      SystemLogger.Use(customErrorHandler)
+
+      /**
+       * Check for something that isn't defined. Also check that
+       * false is returned, indicating error we have an condition.
+       * This allows us to do things like
+       * if ( ƒ(typeof x) ) {...}
+       */
+      expect( ƒ(typeof whatever, msg) ).to.be( false )
     })
   })
 
   
-  describe('type checkers,', function(){
-    check('typeOf returns true or false', function(){
+  describe.skip('type checkers,',function(){
+    check('typeOf returns true or false',function(){
       expect( typeOf('stuff') ).to.be('string')
       expect( typeOf('') ).to.be('string')
       expect( typeOf({}) ).to.be('object')
@@ -58,7 +116,7 @@ var newThing = new Thing()
       expect( typeOf(/$./g) ).to.be('regex')
       expect( typeOf(new RegExp('ab')) ).to.be('regex')
     })
-    check('isString returns true or false', function(){
+    check('isString returns true or false',function(){
       expect( isString( 'stuff' ) ).to.be(true)
       expect( isString( '' ) ).to.be(true)
       expect( isString({}) ).to.be(false)
@@ -74,7 +132,7 @@ var newThing = new Thing()
       expect( isString(/$./g) ).to.be(false)
       expect( isString(new RegExp('ab')) ).to.be(false)
     })
-    check('isType returns true or false', function(){
+    check('isType returns true or false',function(){
       expect( isType({}, 'object') ).to.be(true)
       expect( isType(newThing, 'object') ).to.be(true)
       expect( isType('', 'string') ).to.be(true)
@@ -103,7 +161,7 @@ var newThing = new Thing()
 
       expect( isType('', {}) ).to.be(false)
       expect( isType('', newThing) ).to.be(false)
-      expect( isType('', function(){}) ).to.be(false)
+      expect( isType('',function(){}) ).to.be(false)
       expect( isType('', []) ).to.be(false)
       expect( isType('', 3) ).to.be(false)
       expect( isType('', NaN) ).to.be(false)
@@ -113,27 +171,25 @@ var newThing = new Thing()
       expect( isType('', /$./g) ).to.be(false)
       expect( isType('', new RegExp('ab')) ).to.be(false)
     })
-    check.only('isUndefined returns true or false', function(){
-      var whatever = 'stuff'
-      expect( isUndefined(this.whatever) ).to.be(true)
-      expect( isUndefined(undefined) ).to.be(true)
-      expect( isUndefined(void 0) ).to.be(true)
-      expect( isUndefined((void 0)) ).to.be(true)
+    // check.only('isUndefined returns true or false',function(){
+    //   expect( isUndefined(undefined) ).to.be(true)
+    //   expect( isUndefined(void 0) ).to.be(true)
+    //   expect( isUndefined((void 0)) ).to.be(true)
 
-      expect( isUndefined(0) ).to.be(false)
-      expect( isUndefined('') ).to.be(false)
-      expect( isUndefined('4') ).to.be(false)
-      expect( isUndefined({}) ).to.be(false)
-      expect( isUndefined(newThing) ).to.be(false)
-      expect( isUndefined(function(){}) ).to.be(false)
-      expect( isUndefined([]) ).to.be(false)
-      expect( isUndefined(3) ).to.be(false)
-      expect( isUndefined(NaN) ).to.be(false)
-      expect( isUndefined(null) ).to.be(false)
-      expect( isUndefined(/$./g) ).to.be(false)
-      expect( isUndefined(new RegExp('ab')) ).to.be(false)
-    })
-    check('isFunction returns true or false', function(){
+    //   expect( isUndefined(0) ).to.be(false)
+    //   expect( isUndefined('') ).to.be(false)
+    //   expect( isUndefined('4') ).to.be(false)
+    //   expect( isUndefined({}) ).to.be(false)
+    //   expect( isUndefined(newThing) ).to.be(false)
+    //   expect( isUndefined(function(){}) ).to.be(false)
+    //   expect( isUndefined([]) ).to.be(false)
+    //   expect( isUndefined(3) ).to.be(false)
+    //   expect( isUndefined(NaN) ).to.be(false)
+    //   expect( isUndefined(null) ).to.be(false)
+    //   expect( isUndefined(/$./g) ).to.be(false)
+    //   expect( isUndefined(new RegExp('ab')) ).to.be(false)
+    // })
+    check('isFunction returns true or false',function(){
       expect( isFunction(function(){}) ).to.be(true)
 
       expect( isFunction('') ).to.be(false)
@@ -151,7 +207,7 @@ var newThing = new Thing()
       expect( isFunction(/$./g) ).to.be(false)
       expect( isFunction(new RegExp('ab')) ).to.be(false)
     })
-    check('isObject returns true or false', function(){
+    check('isObject returns true or false',function(){
       expect( isObject( {} ) ).to.be(true)
       expect( isObject(newThing) ).to.be(true)
 
@@ -169,7 +225,7 @@ var newThing = new Thing()
       expect( isObject(/$./g) ).to.be(false)
       expect( isObject(new RegExp('ab')) ).to.be(false)
     })
-    check('isRegex returns true or false', function(){
+    check('isRegex returns true or false',function(){
       expect( isRegex(/$./g) ).to.be(true)
       expect( isRegex(new RegExp('ab')) ).to.be(true)
 
@@ -187,7 +243,7 @@ var newThing = new Thing()
       expect( isRegex(NaN) ).to.be(false)
       expect( isRegex(null) ).to.be(false)
     })
-    check('isArray returns true or false', function(){
+    check('isArray returns true or false',function(){
       expect( isArray([]) ).to.be(true)
 
       expect( isArray('') ).to.be(false)
@@ -205,7 +261,7 @@ var newThing = new Thing()
       expect( isArray(NaN) ).to.be(false)
       expect( isArray(null) ).to.be(false)
     })
-    check('isNull returns true or false', function(){
+    check('isNull returns true or false',function(){
       expect( isNull(null) ).to.be(true)
 
       expect( isNull('') ).to.be(false)
@@ -223,7 +279,7 @@ var newThing = new Thing()
       expect( isNull(3) ).to.be(false)
       expect( isNull(NaN) ).to.be(false)
     })
-    check('isTruthy returns true or false', function(){
+    check('isTruthy returns true or false',function(){
       expect( isTruthy('4') ).to.be(true)
       expect( isTruthy(/$./g) ).to.be(true)
       expect( isTruthy(new RegExp('ab')) ).to.be(true)
@@ -243,7 +299,7 @@ var newThing = new Thing()
       expect( isTruthy(0) ).to.be(false)
       expect( isTruthy(-0) ).to.be(false)
     })
-    check('isFalsey returns true or false', function(){
+    check('isFalsey returns true or false',function(){
       expect( isFalsey('') ).to.be(true)
       expect( isFalsey(undefined) ).to.be(true)
       expect( isFalsey(void 0) ).to.be(true)
@@ -261,25 +317,25 @@ var newThing = new Thing()
       expect( isFalsey([]) ).to.be(false)
       expect( isFalsey(3) ).to.be(false)
     })
-    check('notUndefined returns true or false', function(){
-      expect( notUndefined(undefined) ).to.be(false)
-      expect( notUndefined(void 0) ).to.be(false)
-      expect( notUndefined((void 0)) ).to.be(false)
+    // check('notUndefined returns true or false',function(){
+    //   expect( notUndefined(undefined) ).to.be(false)
+    //   expect( notUndefined(void 0) ).to.be(false)
+    //   expect( notUndefined((void 0)) ).to.be(false)
 
-      expect( notUndefined(0) ).to.be(true)
-      expect( notUndefined('') ).to.be(true)
-      expect( notUndefined('4') ).to.be(true)
-      expect( notUndefined(/$./g) ).to.be(true)
-      expect( notUndefined(new RegExp('ab')) ).to.be(true)
-      expect( notUndefined( {} ) ).to.be(true)
-      expect( notUndefined( newThing ) ).to.be(true)
-      expect( notUndefined(function(){}) ).to.be(true)
-      expect( notUndefined([]) ).to.be(true)
-      expect( notUndefined(3) ).to.be(true)
-      expect( notUndefined(NaN) ).to.be(true)
-      expect( notUndefined(null) ).to.be(true)
-    })
-    check('notFunction returns true or false', function(){
+    //   expect( notUndefined(0) ).to.be(true)
+    //   expect( notUndefined('') ).to.be(true)
+    //   expect( notUndefined('4') ).to.be(true)
+    //   expect( notUndefined(/$./g) ).to.be(true)
+    //   expect( notUndefined(new RegExp('ab')) ).to.be(true)
+    //   expect( notUndefined( {} ) ).to.be(true)
+    //   expect( notUndefined( newThing ) ).to.be(true)
+    //   expect( notUndefined(function(){}) ).to.be(true)
+    //   expect( notUndefined([]) ).to.be(true)
+    //   expect( notUndefined(3) ).to.be(true)
+    //   expect( notUndefined(NaN) ).to.be(true)
+    //   expect( notUndefined(null) ).to.be(true)
+    // })
+    check('notFunction returns true or false',function(){
       expect( notFunction(function(){}) ).to.be(false)
 
       expect( notFunction('') ).to.be(true)
@@ -297,7 +353,7 @@ var newThing = new Thing()
       expect( notFunction(NaN) ).to.be(true)
       expect( notFunction(null) ).to.be(true)
     })
-    check('notObject returns true or false', function(){
+    check('notObject returns true or false',function(){
       expect( notObject( {} ) ).to.be(false)
       expect( notObject( newThing ) ).to.be(false)
 
@@ -315,7 +371,7 @@ var newThing = new Thing()
       expect( notObject(NaN) ).to.be(true)
       expect( notObject(null) ).to.be(true)
     })
-    check('notString returns true or false', function(){
+    check('notString returns true or false',function(){
       expect( notString('4') ).to.be(false)
       expect( notString('') ).to.be(false)
 
@@ -333,7 +389,7 @@ var newThing = new Thing()
       expect( notString(NaN) ).to.be(true)
       expect( notString(null) ).to.be(true)
     })
-    check('notRegex returns true or false', function(){
+    check('notRegex returns true or false',function(){
       expect( notRegex(/$./g) ).to.be(false)
       expect( notRegex(new RegExp('ab')) ).to.be(false)
 
@@ -351,7 +407,7 @@ var newThing = new Thing()
       expect( notRegex(NaN) ).to.be(true)
       expect( notRegex(null) ).to.be(true)
     })
-    check('notArray returns true or false', function(){
+    check('notArray returns true or false',function(){
       expect( notArray([]) ).to.be(false)
 
       expect( notArray('') ).to.be(true)
@@ -369,7 +425,7 @@ var newThing = new Thing()
       expect( notArray(NaN) ).to.be(true)
       expect( notArray(null) ).to.be(true)
     })
-    check('notNull returns true or false', function(){
+    check('notNull returns true or false',function(){
       expect( notNull(null) ).to.be(false)
 
       expect( notNull(/$./g) ).to.be(true)
@@ -385,7 +441,7 @@ var newThing = new Thing()
       expect( notNull(3) ).to.be(true)
       expect( notNull(NaN) ).to.be(true)
     })
-    check('notType returns true or false', function(){
+    check('notType returns true or false',function(){
       expect( notType( /$./g,              null ) ).to.be(true)
       expect( notType( new RegExp('ab'),   null ) ).to.be(true)
       expect( notType( {},                 null ) ).to.be(true)
@@ -400,7 +456,7 @@ var newThing = new Thing()
       expect( notType( NaN,                null ) ).to.be(true)
       expect( notType( null,             void 0 ) ).to.be(true)
     })
-    check('nameOf matches expected output with case sensativity', function(){
+    check('nameOf matches expected output with case sensativity',function(){
       expect( nameOf(/$./g) ).to.not.be('regexp')
       expect( nameOf(new RegExp('ab')) ).to.not.be('regexp')
       expect( nameOf(newThing) ).to.not.be('thing')
@@ -433,12 +489,12 @@ var newThing = new Thing()
     })
   })
 
-
+/*
   var array = [0,1,'20',{},[],null,undefined,NaN,false]
 
 
-  describe('inArray', function(){
-    it('should return true', function(){
+  describe('inArray',function(){
+    it('should return true',function(){
       expect( inArray(1, array) ).to.be(true)
       expect( inArray(0, array) ).to.be(true)
       expect( inArray('20', array) ).to.be(true)
@@ -446,7 +502,7 @@ var newThing = new Thing()
       expect( inArray(undefined, array) ).to.be(true)
       expect( inArray(false, array) ).to.be(true)
     })
-    it('should return false', function(){
+    it('should return false',function(){
       expect( inArray('', array) ).to.be(false)
       expect( inArray({}, array) ).to.be(false)
       expect( inArray([], array) ).to.be(false)
@@ -456,8 +512,8 @@ var newThing = new Thing()
 
 
 
-  describe('standardizePath', function(){
-    it('should produce path of form a/b/c/, or throw error', function(){
+  describe('standardizePath',function(){
+    it('should produce path of form a/b/c/, or throw error',function(){
       expect( standardizePath('/stuff//places/things/') ).to.be('stuff/places/things/')
       expect( standardizePath('/stuff//places/things') ).to.be('stuff/places/things/')
       expect( standardizePath('/stuff///places/things') ).to.be('stuff/places/things/')
@@ -466,36 +522,36 @@ var newThing = new Thing()
       expect( function(){ standardizePath('') } ).to.throwError(/^Path specified is invalid$/g)
     })
   })
-  describe('isValidPath', function(){
-    it('returns true or false, or throws error.', function(){
+  describe('isValidPath',function(){
+    it('returns true or false, or throws error.',function(){
       expect( isValidPath('/stuff/places/things/') ).to.be(true)
 
       expect( isValidPath('/stuff/ places/things/') ).to.be(false)
       expect( isValidPath('/stuff//places/things/') ).to.be(false)
     })
   })
-  describe('saveAsLocal', function(){
+  describe('saveAsLocal',function(){
     //
   })
-  describe('urlParser', function(){
+  describe('urlParser',function(){
     //
   })
-  describe('isFolder', function(){
+  describe('isFolder',function(){
     //
   })
-  describe('isFile', function(){
+  describe('isFile',function(){
     //
   })
-  describe('filesHere', function(){
+  describe('filesHere',function(){
     //
   })
-  describe('formPath', function(){
+  describe('formPath',function(){
     //
   })
-  describe('fileName', function(){
+  describe('fileName',function(){
     //
   })
 
-
+*/
   return this
 })()
