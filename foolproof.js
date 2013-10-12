@@ -5,15 +5,45 @@
  */
 module.exports = function(){
 
-  var error_levels = {0:'error', 2:'']
+  // Level 0 is the worst possible error level. 1 is default for really bad.
+  ReferenceError.prototype.level = 1
+  var log = {
+    takeAction: function(){ return false }
+  }
+
+  /**
+   * Allows you to specify a default logger function which will be invoked on every new error.
+   * @method useLogger
+   * @param func {Function}
+   */
+  this.useLogger = function useLogger (func) {
+    log.takeAction = func
+  }
+
+  /**
+   * alt+f on mac, this is the fail-fast system protection method. Always use with typeof like this: ƒ(typeof [var])
+   * @method ƒ
+   * @param enemy {Variable}
+   */
+  this.ƒ = function ƒ (/*typeof*/ enemy) {
+    
+    if (enemy === 'undefined') {
+      if (log.takeAction() === false) {
+        throw new ReferenceError(msg).level = level
+      }
+    }
+    else
+      return enemy
+  }
+
   /**
    * @method failWhen
-   * @param {Boolean} condition
-   * @param {String} msg
-   * @param {Array} args
-   * @param {String} level
+   * @param condition {Boolean}
+   * @param msg {String}
+   * @param args {Array}
+   * @param level {String}
    */
-   // @throws {Error}
+  // @throws {Error}
   this.failWhen = function failWhen (condition, msg, args, level) {
     if (isTruthy(condition)) {
       var msg = (isString(msg)) ? msg : 'Error occurred in '+nameOf(this)
@@ -24,10 +54,11 @@ module.exports = function(){
     return true
   }
 
+
   /**
    * @method inArray
-   * @param {any object} needle
-   * @param {Array} haystack
+   * @param needle {any object}
+   * @param haystack {Array}
    * @return {Boolean}
    */
   this.inArray = function inArray (needle, haystack) {
@@ -42,8 +73,8 @@ module.exports = function(){
 
   /**
    * @method nameOf
-   * @param {String} thing
-   * @return {String} name of thing
+   * @param thing {String}
+   * @return name {String} of thing
    */
   this.nameOf = function nameOf (thing) {
 
@@ -59,8 +90,8 @@ module.exports = function(){
 
   /**
    * @method typeOf
-   * @param {String} thing
-   * @return {String} type Lower case only.
+   * @param thing {String}
+   * @return type {String} Lower case only.
    */
   this.typeOf = function typeOf (thing) {
     switch (typeof thing) {
@@ -80,8 +111,8 @@ module.exports = function(){
 
   /**
    * @method isType
-   * @param {any object} thing
-   * @param {String} type
+   * @param thing {any object}
+   * @param type {String}
    * @return {Boolean}
    */
   this.isType = function isType (thing, type) {
@@ -93,63 +124,63 @@ module.exports = function(){
 
   /**
    * @method isUndefined
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isUndefined = function isUndefined (thing) {   return (typeOf(thing) === 'undefined')  }
 
   /**
    * @method isFunction
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isFunction = function isFunction (thing) {     return (typeOf(thing) === 'function')   }
 
   /**
    * @method isObject
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isObject = function isObject (thing) {         return (typeOf(thing) === 'object')     }
 
   /**
    * @method isString
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isString = function isString (thing) {         return (typeOf(thing) === 'string')     }
 
   /**
    * @method isRegex
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isRegex = function isRegex (thing) {           return (typeOf(thing) === 'regex')      }
 
   /**
    * @method isArray
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isArray = function isArray (thing) {           return (typeOf(thing) === 'array')      }
 
   /**
    * @method isNull
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isNull = function isNull (thing) {             return (typeOf(thing) === 'null')       }
 
   /**
    * @method isTruthy
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isTruthy = function isTruthy (thing) {         return ( !isFalsey(thing) )             }
 
   /**
    * @method isFalsey
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.isFalsey = function isFalsey (thing) {
@@ -161,57 +192,57 @@ module.exports = function(){
 
   /**
    * @method notType
-   * @param {any object} thing
-   * @param {String} type
+   * @param thing {any object}
+   * @param type {String}
    * @return {Boolean}
    */
   this.notType = function notType (thing, type) {         return !isType (thing, type)   }
 
   /**
    * @method notUndefined
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notUndefined = function notUndefined (thing) {     return !isUndefined (thing)    }
 
   /**
    * @method notFunction
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notFunction = function notFunction (thing) {       return !isFunction (thing)     }
 
   /**
    * @method notObject
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notObject = function notObject (thing) {           return !isObject (thing)       }
 
   /**
    * @method notString
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notString = function notString (thing) {           return !isString (thing)       }
 
   /**
    * @method notRegex
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notRegex = function notRegex (thing) {             return !isRegex (thing)        }
 
   /**
    * @method notArray
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notArray = function notArray (thing) {             return !isArray (thing)        }
 
   /**
    * @method notNull
-   * @param {any object} thing
+   * @param thing {any object}
    * @return {Boolean}
    */
   this.notNull = function notNull (thing) {               return !isNull (thing)         }
@@ -219,7 +250,7 @@ module.exports = function(){
 
   /**
    * @method standardizePath
-   * @param {any object} thing path
+   * @param path {any object} thing
    * @return {Boolean}
    */
   this.standardizePath = function validPath (path) {
@@ -236,37 +267,46 @@ module.exports = function(){
 
   /**
    * @method isValidPath
-   * @param {String} path
+   * @param path {String}
    * @return {Boolean}
    */
   this.isValidPath = function isValidPath (path) {
-    failWhen( isFalsey(path), path )
+    failWhen( isFalsey(path), 'isValidPath() called with invalid arguments.', arguments, 1 )
     return ( /[A-Za-z0-9._~:\-\/?#@!$&'\[\]()*+,;=%]+/g.test(path) )// && /\/\/{0,1}/g.test(path) )
   }
 
   /**
+   * Allows saving of external variables to local variables, by variable name.
    * @method saveThese
-   * @param {Array or String} args
-   * @param {Array} params
+   * @param thing {Object or Array}
+   * @param list {Array} Is always an array of variable names to permit overwriting.
    */
-  this.saveThese = function saveThese (args, params) {
-    failWhen( notString(args) && notObject(args) && notArray(params), type, arguments )
+  this.saveThese = function saveThese (thing, list) {
 
-    if ( isString(args) && isArray(params) )
-      if (inArray(args, params))
-        eval(arg+' = '+params)
+    failWhen( (notObject(thing) && notArray(thing)) || notArray(list), 'saveThese() called with invalid arguments.', arguments, 3 )
 
-    else if ( isObject(args) && isArray(params) )
-      for (var arg in args)
-        if (inArray(arg, params))
-          eval(arg+' = args[arg]')
+    // Saves a list of values to the variables named in the list array.
+    if ( isArray(thing) && isArray(list) ) {
+      for (var each in list) {
+        if ( isString(list[each]) ) // because each list item needs to be a string which should match a local variable name.
+          eval(list[each]+' = thing[each]')
+      }
+    }
+
+    // This is how we save many values to local variables, taken from the key/value pairs (properties) of thing.
+    else if ( isObject(thing) && isArray(list) ) {
+      for (var property in thing) {
+        if (inArray(property, list))
+          eval(property+' = thing[property]')
+      }
+    }
   }
 
   /**
    * @method urlParser
-   * @param {Regex} regex
-   * @param {String} url
-   * @param {Array} vars
+   * @param regex {Regex}
+   * @param url {String}
+   * @param vars {Array}
    */
   this.urlParser = function urlParser (regex, url, vars) {
     var args
@@ -290,44 +330,50 @@ module.exports = function(){
 
   var fs = require('fs')
   var pth = require('path')
+
   // Prettier function names.
   /**
    * @method isFolder
-   * @param {String} path
+   * @param path {String}
    * @return {Boolean}
    */
   this.isFolder  = function isFolder(path){        return fs.lstatSync( path ).isDirectory()           }
+
   /**
    * @method isFile
-   * @param {String} path
+   * @param path {String}
    * @return {Boolean}
    */
   this.isFile = function isFile(path) {
+
     failWhen( notString(path), 'ifFile requires a string!', path )
     return fs.lstatSync( path ).isFile()
   }
   /**
    * @method filesHere
-   * @param {String} path
+   * @param path {String}
    * @return {Array}
    */
   this.filesHere = function filesHere(path){       return fs.readdirSync( path )                       }
+
   /**
    * @method formPath
-   * @param {String} path
-   * @param {String} file
+   * @param path {String}
+   * @param file {String}
    * @return {String}
    */
   this.formPath  = function formPath(path, file){  return pth.join( path, file )                       }
+
   /**
    * @method fileName
-   * @param {String} path
+   * @param path {String}
    * @return {String}
    */
   this.fileName  = function fileName(path){        return pth.basename(path, type.replace(/^\b/,'.'))  }
+
   /**
    * @method fileName
-   * @param {String} path
+   * @param path {String}
    * @return {String}
    */
   this.loadFile  = function fileName(file, encoding) {
@@ -337,6 +383,8 @@ module.exports = function(){
     else
       return null
   }
+
+
 
   return this
 }

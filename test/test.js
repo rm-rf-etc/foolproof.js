@@ -36,6 +36,13 @@ var newThing = new Thing()
     })
   })
 
+
+  describe('The fail-fast method',function(){
+    it('can properly detect, handle, and throw reference errors.',function(){
+      expect( ƒ(typeof whatever) ).to.throwError()
+    })
+  })
+
   
   describe('type checkers,', function(){
     check('typeOf returns true or false', function(){
@@ -106,7 +113,9 @@ var newThing = new Thing()
       expect( isType('', /$./g) ).to.be(false)
       expect( isType('', new RegExp('ab')) ).to.be(false)
     })
-    check('isUndefined returns true or false', function(){
+    check.only('isUndefined returns true or false', function(){
+      var whatever = 'stuff'
+      expect( isUndefined(this.whatever) ).to.be(true)
       expect( isUndefined(undefined) ).to.be(true)
       expect( isUndefined(void 0) ).to.be(true)
       expect( isUndefined((void 0)) ).to.be(true)
