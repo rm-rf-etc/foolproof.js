@@ -53,11 +53,8 @@ module.exports = function(){
   }
 
   /**
-   * @method isUndefined
-   * @param {any object} thing
-   * @return {Boolean}
    */
-  this.isUndefined = function isUndefined (thing) {   return (typeOf(thing) === 'undefined')  }
+  //this.isUndefined = function isUndefined (thing) {   return (typeOf(thing) === 'undefined')  }
 
   /**
    * @method isFunction
@@ -106,19 +103,14 @@ module.exports = function(){
    * @param {any object} thing
    * @return {Boolean}
    */
-  this.isTruthy = function isTruthy (thing) {         return ( !isFalsey(thing) )             }
+  this.isTruthy = function isTruthy (thing) {         return !!thing                          }
 
   /**
    * @method isFalsey
    * @param {any object} thing
    * @return {Boolean}
    */
-  this.isFalsey = function isFalsey (thing) {
-    if (isUndefined(thing))
-      return true
-    else
-      return !thing
-  }
+  this.isFalsey = function isFalsey (thing) {         return !thing                           }
 
   /**
    * @method notType
@@ -129,11 +121,8 @@ module.exports = function(){
   this.notType = function notType (thing, type) {         return !isType (thing, type)   }
 
   /**
-   * @method notUndefined
-   * @param {any object} thing
-   * @return {Boolean}
    */
-  this.notUndefined = function notUndefined (thing) {     return !isUndefined (thing)    }
+  // this.notUndefined = function notUndefined (thing) {     return !isUndefined (thing)    }
 
   /**
    * @method notFunction
