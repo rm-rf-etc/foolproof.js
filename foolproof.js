@@ -1,6 +1,6 @@
 
 /**
- * @module Bulletproof
+ * @module foolproof
  * @class Exports
  */
 module.exports = function(){
