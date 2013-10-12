@@ -15,7 +15,7 @@ conditions.
 
 ## Functions:
 
-* new: ƒ(typeof var) - the fail-fast method, always use with typeof.
+* new: ƒ(typeof var) - the fail-fast method, always use with typeof. (in dev branch)
 * inArray()
 * typeOf()
 * isType()
