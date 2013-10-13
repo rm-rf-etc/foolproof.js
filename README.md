@@ -19,12 +19,11 @@ conditions.
 
 ## Functions:
 
-* new (in dev branch):
-  * SystemLogger - has Use() and EpicFail() methods.
-  * E(typeof var) - shorthand for (typeof var !== 'undefined')
-  * U(typeof var) - shorthand for (typeof var === 'undefined')
-  * failWhen() - a fail-fast method.
-  * ƒ(typeof var) - a fail-fast method, always use with typeof. (in dev branch)
+* SystemLogger - has Use() and EpicFail() methods.
+* E(typeof var) - shorthand for (typeof var !== 'undefined')
+* U(typeof var) - shorthand for (typeof var === 'undefined')
+* failWhen() - a fail-fast method.
+* ƒ(typeof var) - a fail-fast method, always use with typeof.
 * inArray()
 * typeOf()
 * isType()
