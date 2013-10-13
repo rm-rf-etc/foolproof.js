@@ -75,10 +75,14 @@ in your app's context, like this:
 var App = (function(){
 
   require('foolproof').apply(this)
-
-  // does stuff...
+  
+  // and now you have new methods, natively.
 
   console.log( isString('this is a demo') )
+  // prints true
+  
+  console.log( isFunction( function(){} ) )
+  // prints true
 
   return this
 })()
