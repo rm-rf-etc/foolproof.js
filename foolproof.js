@@ -84,13 +84,13 @@ module.exports = function(){
    * @param lvl {Number}
    * @return {Boolean}
    */
-  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl) {
+  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl, type) {
     
     var msg = msg || ''
     var lvl = lvl || 1
 
     if ( enemy === 'undefined' ) {
-      SystemLogger.EpicFail(msg, lvl)
+      SystemLogger.EpicFail(msg, lvl, type)
       return false
     }
     else
@@ -126,13 +126,13 @@ module.exports = function(){
    * return {Boolean}
    */
   // @throws {Error}
-  this.failWhen = function failWhen (condition, msg, lvl) {
+  this.failWhen = function failWhen (condition, msg, lvl, type) {
 
     var msg = msg || ''
     var lvl = lvl || 1
 
     if ( condition ) {
-      SystemLogger.EpicFail(msg, lvl)
+      SystemLogger.EpicFail(msg, lvl, type)
       return false
     }
     else

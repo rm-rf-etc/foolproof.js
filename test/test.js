@@ -9,6 +9,11 @@ var newThing = new Thing()
 ;(function(){
   require('../foolproof').apply(this)
 
+
+
+  /**
+   *
+   */
   describe('Helpers',function(){
     it('Created expected methods in this context.',function(){
 
@@ -64,6 +69,9 @@ var newThing = new Thing()
 
 
 
+  /**
+   *
+   */
   describe('ƒ(typeof var), a fail-fast method',function(){
     it('can properly detect, handle, and throw reference errors.',function(){
 
@@ -92,19 +100,15 @@ var newThing = new Thing()
       }
 
       SystemLogger.Use(customErrorHandler)
-
-      /**
-       * Check for something that isn't defined. Also check that
-       * false is returned, indicating error we have an condition.
-       * This allows us to do things like
-       * if ( ƒ(typeof x) ) {...}
-       */
       expect( ƒ(typeof whatever, msg) ).to.be( false )
     })
   })
 
 
 
+  /**
+   *
+   */
   describe('E(typeof var), the existential method.',function(){
     it('Evaluates to true when expected.',function(){
       expect( E(typeof whatever) ).to.be( true )
@@ -128,7 +132,10 @@ var newThing = new Thing()
 
 
 
-  describe('failWhen(), a fail-fast method.',function(){
+  /**
+   *
+   */
+  describe.only('failWhen(), a fail-fast method.',function(){
     it('Properly detect, handle, and throw reference errors.',function(){
 
       SystemLogger.Use(function(){
@@ -166,18 +173,68 @@ var newThing = new Thing()
       }
 
       SystemLogger.Use(customErrorHandler)
-
-      /**
-       * Check for something that isn't defined. Also check that
-       * false is returned, indicating error we have an condition.
-       * This allows us to do things like
-       * if ( ƒ(typeof x) ) {...}
-       */
       expect( failWhen( E(typeof whatever), msg) ).to.be( false )
+    })
+
+    var msg = 'Send this out, expect() to get it back.'
+
+    it('Throws whatever error object it is given.',function(done){
+      SystemLogger.Use(function (err) {
+        expect( err ).to.be.a( ReferenceError )
+        expect( err.lvl ).to.be( 1 )
+        go2()
+      })
+      expect( failWhen( E(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
+
+      function go2(){
+        SystemLogger.Use(function (err) {
+          expect( err ).to.be.a( SyntaxError )
+          expect( err.lvl ).to.be( 1 )
+          go3()
+        })
+        expect( failWhen( E(typeof whatever), msg, 1, SyntaxError) ).to.be( false )
+      }
+
+      function go3(){
+        SystemLogger.Use(function (err) {
+          expect( err ).to.be.a( EvalError )
+          expect( err.lvl ).to.be( 1 )
+          go4()
+        })
+        expect( failWhen( E(typeof whatever), msg, 1, EvalError) ).to.be( false )
+      }
+      function go4(){
+        SystemLogger.Use(function (err) {
+          expect( err ).to.be.a( RangeError )
+          expect( err.lvl ).to.be( 1 )
+          go5()
+        })
+        expect( failWhen( E(typeof whatever), msg, 1, RangeError) ).to.be( false )
+      }
+      function go5(){
+        SystemLogger.Use(function (err) {
+          expect( err ).to.be.a( TypeError )
+          expect( err.lvl ).to.be( 1 )
+          go6()
+        })
+        expect( failWhen( E(typeof whatever), msg, 1, TypeError) ).to.be( false )
+      }
+      function go6(){
+        SystemLogger.Use(function (err) {
+          expect( err ).to.be.a( URIError )
+          expect( err.lvl ).to.be( 1 )
+          done()
+        })
+        expect( failWhen( E(typeof whatever), msg, 1, URIError) ).to.be( false )
+      }
     })
   })
 
   
+
+  /**
+   *
+   */
   describe.skip('type checkers,',function(){
     check('typeOf returns true or false',function(){
       expect( typeOf('stuff') ).to.be('string')
