@@ -15,11 +15,15 @@ conditions.
 
 ## Functions:
 
-* new: ƒ(typeof var) - the fail-fast method, always use with typeof. (in dev branch)
+* new (in dev branch):
+  * SystemLogger - has Use() and EpicFail() methods.
+  * E(typeof var) - shorthand for (typeof var === 'undefined')
+  * failWhen() - a fail-fast method.
+  * ƒ(typeof var) - a fail-fast method, always use with typeof. (in dev branch)
 * inArray()
 * typeOf()
 * isType()
-* isUndefined()
+* ~~isUndefined()~~
 * isFunction()
 * isObject()
 * isString()
@@ -29,7 +33,7 @@ conditions.
 * isTruthy()
 * isFalsey()
 * notType()
-* notUndefined()
+* ~~notUndefined()~~
 * notFunction()
 * notObject()
 * notString()
