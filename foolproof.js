@@ -40,13 +40,16 @@ module.exports = function(){
      * @param lvl {Number} level value that will go into the error.
      * @param type {Error} optional, include if you don't want a ReferenceError.
      */
-    function EpicFail (msg, lvl, type) {
+    function EpicFail (msg, lvl, typ, req) {
       var msg = msg || 'No error message was defined for this condition.'
 
-      if (typeof type !== 'undefined')
-        var err = new type(msg)
+      // console.log('type is:', typ)
+
+      var err
+      if ( E(typeof typ) )
+        err = new typ(msg)
       else
-        var err = new ReferenceError(msg)
+        err = new ReferenceError(msg)
 
       err.lvl = lvl || 1
 
@@ -70,6 +73,21 @@ module.exports = function(){
 
 
 
+  /**
+   * Just a shorthand for (typeof x === 'undefined').
+   *
+   * @method E(typeof var)
+   * @for Exports
+   * @param thing {Variable}
+   * @return {Boolean}
+   */
+  this.U = function U (/*typeof*/ thing) {
+    return (thing === 'undefined')
+  }
+  this.E = function E (/*typeof*/ thing) {
+    return (thing !== 'undefined')
+  }
+
 
   /**
    * This is a fail-fast system protection method. Always use with the typeof
@@ -84,30 +102,18 @@ module.exports = function(){
    * @param lvl {Number}
    * @return {Boolean}
    */
-  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl, type) {
+  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl, typ, req) {
     
-    var msg = msg || ''
-    var lvl = lvl || 1
+    var msg = msg || undefined
+    var lvl = lvl || undefined
+    var typ = typ || undefined
 
-    if ( enemy === 'undefined' ) {
-      SystemLogger.EpicFail(msg, lvl, type)
+    if (enemy === 'undefined') {
+      SystemLogger.EpicFail(msg, lvl, typ)
       return false
     }
     else
       return true
-  }
-
-
-  /**
-   * Just a shorthand for (typeof x === 'undefined').
-   *
-   * @method E(typeof var)
-   * @for Exports
-   * @param thing {Variable}
-   * @return {Boolean}
-   */
-  this.E = function E (/*typeof*/ thing) {
-    return (thing === 'undefined')
   }
 
 
@@ -126,13 +132,14 @@ module.exports = function(){
    * return {Boolean}
    */
   // @throws {Error}
-  this.failWhen = function failWhen (condition, msg, lvl, type) {
+  this.failWhen = function failWhen (condition, msg, lvl, typ, req) {
 
-    var msg = msg || ''
-    var lvl = lvl || 1
+    var msg = msg || undefined
+    var lvl = lvl || undefined
+    var typ = typ || undefined
 
     if ( condition ) {
-      SystemLogger.EpicFail(msg, lvl, type)
+      SystemLogger.EpicFail(msg, lvl, typ)
       return false
     }
     else
@@ -163,14 +170,18 @@ module.exports = function(){
    */
   this.nameOf = function nameOf (thing) {
 
-    if ( isFunction(thing) )
-      return /^function\s(\w+?)\(\).*/g.exec( thing.toString() )[1]
+    if ( isFunction(thing) ) {
+      if ( /^function\s\(/g.test(thing.toString()) )
+        return 'Anonymous Function'
+      else
+        return /^function\s(\w+?)\(\).*/g.exec( thing.toString() )[1]
+    }
 
-    if ( notNull(thing) && notUndefined(thing) )
+    if (thing !== null && thing !== undefined )
       return thing.constructor.name
     
     else
-      return (isNull(thing)) ? 'Null' : 'Undefined'
+      return (thing === null) ? 'Null' : 'Undefined'
   }
 
   /**
@@ -208,14 +219,6 @@ module.exports = function(){
     else
       return false //! Or throw error?
   }
-
-  /**
-   * @method isUndefined
-   * @for Exports
-   * @param thing {any object}
-   * @return {Boolean}
-   */
-  this.isUndefined = function isUndefined (thing) {   return (typeOf(thing) === 'undefined')  }
 
   /**
    * @method isFunction
@@ -279,12 +282,7 @@ module.exports = function(){
    * @param thing {any object}
    * @return {Boolean}
    */
-  this.isFalsey = function isFalsey (thing) {
-    if (isUndefined(thing))
-      return true
-    else
-      return !thing
-  }
+  this.isFalsey = function isFalsey (thing) {         return !thing                           }
 
   /**
    * @method notType
@@ -294,14 +292,6 @@ module.exports = function(){
    * @return {Boolean}
    */
   this.notType = function notType (thing, type) {         return !isType (thing, type)   }
-
-  /**
-   * @method notUndefined
-   * @for Exports
-   * @param thing {any object}
-   * @return {Boolean}
-   */
-  this.notUndefined = function notUndefined (thing) {     return !isUndefined (thing)    }
 
   /**
    * @method notFunction
@@ -364,9 +354,9 @@ module.exports = function(){
       path = path.replace(/^\//, '') // Remove potential leading slash.
       if (/[^\/]$/.test( path )) path += '/'; // Include trailing slash.
     }
-    else if ( path !== '/' ) {
-      if ( ! isValidPath(path) )
-        return '/'
+    else if ( notValidPath(path) ) {
+      failWhen(true, 'Path string is invalid.', 1)
+      return false
     }
 
     return path
@@ -386,30 +376,12 @@ module.exports = function(){
   }
 
   /**
-   * Allows saving of external variables to local variables, by variable name.
+   * @method notValidPath
    * @for Exports
-   * @method saveThese
-   * @param thing {Object or Array}
-   * @param list {Array} Is always an array of variable names to permit overwriting.
+   * @param path {String}
+   * @return {Boolean}
    */
-  this.saveThese = function saveThese (thing, list) {
-
-    // Saves a list of values to the variables named in the list array.
-    if ( isArray(thing) && isArray(list) ) {
-      for (var each in list) {
-        if ( isString(list[each]) ) // because each list item needs to be a string which should match a local variable name.
-          eval(list[each]+' = thing[each]')
-      }
-    }
-
-    // This is how we save many values to local variables, taken from the key/value pairs (properties) of thing.
-    else if ( isObject(thing) && isArray(list) ) {
-      for (var property in thing) {
-        if (inArray(property, list))
-          eval(property+' = thing[property]')
-      }
-    }
-  }
+  this.notValidPath = function notValidPath (path) {       return ! isValidPath(path)    }
 
   /**
    * @method urlParser

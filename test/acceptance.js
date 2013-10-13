@@ -15,7 +15,7 @@ var newThing = new Thing()
    *
    */
   describe('Helpers',function(){
-    it('Created expected methods in this context.',function(){
+    it('Created expected methods in this context',function(){
 
       expect( SystemLogger ).to.be.an( 'object' )
 
@@ -45,7 +45,6 @@ var newThing = new Thing()
 
       expect( standardizePath ).to.be.a( 'function' )
       expect( isValidPath ).to.be.a( 'function' )
-      expect( saveThese ).to.be.a( 'function' )
       expect( urlParser ).to.be.a( 'function' )
       expect( isFolder ).to.be.a( 'function' )
       expect( isFile ).to.be.a( 'function' )
@@ -58,10 +57,10 @@ var newThing = new Thing()
   })
 
   describe('SystemLogger',function(){
-    it('Exists as an object.',function(){
+    it('Exists as an object',function(){
       expect( SystemLogger ).to.be.an('object')
     })
-    it('Has expected methods, Use() and EpicFail().',function(){
+    it('Has expected methods, Use() and EpicFail()',function(){
       expect( SystemLogger ).to.have.property( 'Use' )
       expect( SystemLogger ).to.have.property( 'EpicFail' )
     })
@@ -73,7 +72,7 @@ var newThing = new Thing()
    *
    */
   describe('ƒ(typeof var), a fail-fast method',function(){
-    it('can properly detect, handle, and throw reference errors.',function(){
+    it('can properly detect, handle, and throw reference errors',function(){
 
       SystemLogger.Use(function(){
         throw new ReferenceError()
@@ -88,7 +87,7 @@ var newThing = new Thing()
     })
 
 
-    it('invokes the predefined error handler.',function(done){
+    it('invokes the predefined error handler',function(done){
       var msg = 'Send this out, expect() to get it back.'
 
       function customErrorHandler (err) {
@@ -109,24 +108,24 @@ var newThing = new Thing()
   /**
    *
    */
-  describe('E(typeof var), the existential method.',function(){
-    it('Evaluates to true when expected.',function(){
-      expect( E(typeof whatever) ).to.be( true )
-      expect( E(typeof undefined) ).to.be( true )
-      expect( E(typeof void 0) ).to.be( true )
-      expect( E('undefined') ).to.be( true )
+  describe('U(typeof var), true when undefined',function(){
+    it('Evaluates to true when expected',function(){
+      expect( U(typeof whatever) ).to.be( true )
+      expect( U(typeof undefined) ).to.be( true )
+      expect( U(typeof void 0) ).to.be( true )
+      expect( U('undefined') ).to.be( true )
     })
-    it('Evaluates to false when expected.',function(){
-      expect( E(typeof SystemLogger) ).to.be( false )
-      expect( E(typeof new RegExp('')) ).to.be( false )
-      expect( E(typeof /^.$/g) ).to.be( false )
-      expect( E(typeof E) ).to.be( false )
-      expect( E(typeof {}) ).to.be( false )
-      expect( E(typeof []) ).to.be( false )
-      expect( E(typeof NaN) ).to.be( false )
-      expect( E(typeof 1) ).to.be( false )
-      expect( E(typeof 0) ).to.be( false )
-      expect( E(typeof '') ).to.be( false )
+    it('Evaluates to false when expected',function(){
+      expect( U(typeof SystemLogger) ).to.be( false )
+      expect( U(typeof new RegExp('')) ).to.be( false )
+      expect( U(typeof /^.$/g) ).to.be( false )
+      expect( U(typeof E) ).to.be( false )
+      expect( U(typeof {}) ).to.be( false )
+      expect( U(typeof []) ).to.be( false )
+      expect( U(typeof NaN) ).to.be( false )
+      expect( U(typeof 1) ).to.be( false )
+      expect( U(typeof 0) ).to.be( false )
+      expect( U(typeof '') ).to.be( false )
     })
   })
 
@@ -135,15 +134,15 @@ var newThing = new Thing()
   /**
    *
    */
-  describe('failWhen(), a fail-fast method.',function(){
-    it('Properly detect, handle, and throw reference errors.',function(){
+  describe('failWhen(), a fail-fast method',function(){
+    it('Properly detect, handle, and throw reference errors',function(){
 
       SystemLogger.Use(function(){
         throw new ReferenceError()
       })
 
       expect(function(){
-        failWhen( E(typeof whatever) )
+        failWhen( U(typeof whatever) )
       }).to.throwError(function(e){
         expect( e ).to.be.a(ReferenceError)
         expect( e ).to.not.be.a(SyntaxError)
@@ -151,17 +150,17 @@ var newThing = new Thing()
 
 
       expect(function(){
-        failWhen( E(typeof undefined) )
+        failWhen( U(typeof undefined) )
       }).to.throwError()
 
 
       expect(function(){
-        failWhen( E('undefined') )
+        failWhen( U('undefined') )
       }).to.throwError()
     })
 
 
-    it('Invokes the predefined error handler.',function(done){
+    it('Invokes the predefined error handler',function(done){
       var msg = 'Send this out, expect() to get it back.'
 
       function customErrorHandler (err) {
@@ -173,18 +172,18 @@ var newThing = new Thing()
       }
 
       SystemLogger.Use(customErrorHandler)
-      expect( failWhen( E(typeof whatever), msg) ).to.be( false )
+      expect( failWhen( U(typeof whatever), msg) ).to.be( false )
     })
 
     var msg = 'Send this out, expect() to get it back.'
 
-    it('Throws whatever error object it is given.',function(done){
+    it('Throws whatever error object it is given',function(done){
       SystemLogger.Use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
         go2()
       })
-      expect( failWhen( E(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
+      expect( failWhen( U(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
 
       function go2(){
         SystemLogger.Use(function (err) {
@@ -192,7 +191,7 @@ var newThing = new Thing()
           expect( err.lvl ).to.be( 1 )
           go3()
         })
-        expect( failWhen( E(typeof whatever), msg, 1, SyntaxError) ).to.be( false )
+        expect( failWhen( U(typeof whatever), msg, 1, SyntaxError) ).to.be( false )
       }
 
       function go3(){
@@ -201,7 +200,7 @@ var newThing = new Thing()
           expect( err.lvl ).to.be( 1 )
           go4()
         })
-        expect( failWhen( E(typeof whatever), msg, 1, EvalError) ).to.be( false )
+        expect( failWhen( U(typeof whatever), msg, 1, EvalError) ).to.be( false )
       }
       function go4(){
         SystemLogger.Use(function (err) {
@@ -209,7 +208,7 @@ var newThing = new Thing()
           expect( err.lvl ).to.be( 1 )
           go5()
         })
-        expect( failWhen( E(typeof whatever), msg, 1, RangeError) ).to.be( false )
+        expect( failWhen( U(typeof whatever), msg, 1, RangeError) ).to.be( false )
       }
       function go5(){
         SystemLogger.Use(function (err) {
@@ -217,7 +216,7 @@ var newThing = new Thing()
           expect( err.lvl ).to.be( 1 )
           go6()
         })
-        expect( failWhen( E(typeof whatever), msg, 1, TypeError) ).to.be( false )
+        expect( failWhen( U(typeof whatever), msg, 1, TypeError) ).to.be( false )
       }
       function go6(){
         SystemLogger.Use(function (err) {
@@ -225,7 +224,7 @@ var newThing = new Thing()
           expect( err.lvl ).to.be( 1 )
           done()
         })
-        expect( failWhen( E(typeof whatever), msg, 1, URIError) ).to.be( false )
+        expect( failWhen( U(typeof whatever), msg, 1, URIError) ).to.be( false )
       }
     })
   })
@@ -235,7 +234,7 @@ var newThing = new Thing()
   /**
    *
    */
-  describe.skip('type checkers,',function(){
+  describe('type checkers,',function(){
     check('typeOf returns true or false',function(){
       expect( typeOf('stuff') ).to.be('string')
       expect( typeOf('') ).to.be('string')
@@ -614,17 +613,23 @@ var newThing = new Thing()
       expect( nameOf(NaN) ).to.be('Number')
       expect( nameOf('') ).to.be('String')
       expect( nameOf('whatever') ).to.be('String')
-      expect( nameOf(function(){}) ).to.be('Function')
+      expect( nameOf(function(){}) ).to.be('Anonymous Function')
       expect( nameOf([]) ).to.be('Array')
       expect( nameOf(null) ).to.be('Null')
       expect( nameOf(void 0) ).to.be('Undefined')
       expect( nameOf(undefined) ).to.be('Undefined')
+      /*
+      */
     })
   })
 
   var array = [0,1,'20',{},[],null,undefined,NaN,false]
 
 
+
+  /**
+   *
+   */
   describe('inArray',function(){
     it('should return true',function(){
       expect( inArray(1, array) ).to.be(true)
@@ -646,17 +651,27 @@ var newThing = new Thing()
 
 
 
+  /**
+   *
+   */
   describe('standardizePath',function(){
-    it('should produce path of form a/b/c/.',function(){
+    it('should return a path of the form a/b/c/',function(){
       expect( standardizePath('/stuff//places/things/') ).to.be('stuff/places/things/')
       expect( standardizePath('/stuff//places/things') ).to.be('stuff/places/things/')
       expect( standardizePath('/stuff///places/things') ).to.be('stuff/places/things/')
       expect( standardizePath('///stuff///places//////things///') ).to.be('stuff/places/things/')
-
-      expect( function(){ standardizePath('') } ).to.throwError(/^Path specified is invalid$/g)
+    })
+    it('Returns false and trips the error reporting system.',function(done){
+      SystemLogger.Use(function (err) {
+        expect( err ).to.be.a( ReferenceError )
+        expect( err.lvl ).to.be( 1 )
+        expect( err.message ).to.be('Path string is invalid.')
+        done()
+      })
+      expect( standardizePath('') ).to.be(false)
     })
   })
-  describe.only('isValidPath',function(){
+  describe('isValidPath',function(){
     it('Conditions where it returns true',function(){
       expect( isValidPath('/stuff/places/things/') ).to.be(true)
       expect( isValidPath('/stuff//places/things/') ).to.be(true)
@@ -672,10 +687,8 @@ var newThing = new Thing()
       expect( isValidPath(null) ).to.be(false)
     })
   })
+
 /*
-  describe.only('saveAsLocal',function(){
-    //
-  })
   describe.only('urlParser',function(){
     //
   })
