@@ -135,7 +135,7 @@ var newThing = new Thing()
   /**
    *
    */
-  describe.only('failWhen(), a fail-fast method.',function(){
+  describe('failWhen(), a fail-fast method.',function(){
     it('Properly detect, handle, and throw reference errors.',function(){
 
       SystemLogger.Use(function(){
@@ -622,7 +622,6 @@ var newThing = new Thing()
     })
   })
 
-/*
   var array = [0,1,'20',{},[],null,undefined,NaN,false]
 
 
@@ -634,19 +633,21 @@ var newThing = new Thing()
       expect( inArray(null, array) ).to.be(true)
       expect( inArray(undefined, array) ).to.be(true)
       expect( inArray(false, array) ).to.be(true)
+      /*
+      */
     })
     it('should return false',function(){
-      expect( inArray('', array) ).to.be(false)
-      expect( inArray({}, array) ).to.be(false)
-      expect( inArray([], array) ).to.be(false)
-      expect( inArray(NaN, array) ).to.be(false)
+      expect( inArray('', array)  ).to.be( false )
+      expect( inArray({}, array)  ).to.be( false )
+      expect( inArray([], array)  ).to.be( false )
+      expect( inArray(NaN, array) ).to.be( false )
     })
   })
 
 
 
   describe('standardizePath',function(){
-    it('should produce path of form a/b/c/, or throw error',function(){
+    it('should produce path of form a/b/c/.',function(){
       expect( standardizePath('/stuff//places/things/') ).to.be('stuff/places/things/')
       expect( standardizePath('/stuff//places/things') ).to.be('stuff/places/things/')
       expect( standardizePath('/stuff///places/things') ).to.be('stuff/places/things/')
@@ -655,33 +656,42 @@ var newThing = new Thing()
       expect( function(){ standardizePath('') } ).to.throwError(/^Path specified is invalid$/g)
     })
   })
-  describe('isValidPath',function(){
-    it('returns true or false, or throws error.',function(){
+  describe.only('isValidPath',function(){
+    it('Conditions where it returns true',function(){
       expect( isValidPath('/stuff/places/things/') ).to.be(true)
-
+      expect( isValidPath('/stuff//places/things/') ).to.be(true)
+      expect( isValidPath("/._~:-/?#@!$&'[]()*+,;=%/+/=/*/") ).to.be(true)
+      expect( isValidPath('!') ).to.be(true)
+      expect( isValidPath(':') ).to.be(true)
+    })
+    it('Conditions where it returns false',function(){
+      expect( isValidPath('') ).to.be(false)
+      expect( isValidPath('!"') ).to.be(false)
+      expect( isValidPath('/{}/places/things/') ).to.be(false)
       expect( isValidPath('/stuff/ places/things/') ).to.be(false)
-      expect( isValidPath('/stuff//places/things/') ).to.be(false)
+      expect( isValidPath(null) ).to.be(false)
     })
   })
-  describe('saveAsLocal',function(){
+/*
+  describe.only('saveAsLocal',function(){
     //
   })
-  describe('urlParser',function(){
+  describe.only('urlParser',function(){
     //
   })
-  describe('isFolder',function(){
+  describe.only('isFolder',function(){
     //
   })
-  describe('isFile',function(){
+  describe.only('isFile',function(){
     //
   })
-  describe('filesHere',function(){
+  describe.only('filesHere',function(){
     //
   })
-  describe('formPath',function(){
+  describe.only('formPath',function(){
     //
   })
-  describe('fileName',function(){
+  describe.only('fileName',function(){
     //
   })
 

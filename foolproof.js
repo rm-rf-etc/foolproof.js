@@ -148,8 +148,6 @@ module.exports = function(){
    * @return {Boolean}
    */
   this.inArray = function inArray (needle, haystack) {
-    if (failWhen(notArray(haystack), 'inArray requires haystack be Array.', arguments))
-      return false
 
     for (var key in haystack)
       if (haystack[key] === needle) return true
@@ -360,14 +358,16 @@ module.exports = function(){
    * @param path {any object} thing
    * @return {Boolean}
    */
-  this.standardizePath = function validPath (path) {
+  this.standardizePath = function standardizePath (path) {
     if (path.length > 1) {
       path = path.replace(/\/{2,}/g, '/')
       path = path.replace(/^\//, '') // Remove potential leading slash.
       if (/[^\/]$/.test( path )) path += '/'; // Include trailing slash.
     }
-    else if ( path !== '/' || /\/\//.test(path) )
-      throw new Error('Path specified is invalid', arguments)
+    else if ( path !== '/' ) {
+      if ( ! isValidPath(path) )
+        return '/'
+    }
 
     return path
   }
@@ -379,8 +379,10 @@ module.exports = function(){
    * @return {Boolean}
    */
   this.isValidPath = function isValidPath (path) {
-    failWhen( isFalsey(path), 'isValidPath() called with invalid arguments.', arguments, 1 )
-    return ( /[A-Za-z0-9._~:\-\/?#@!$&'\[\]()*+,;=%]+/g.test(path) )// && /\/\/{0,1}/g.test(path) )
+    if (isString(path))
+      return ( /^[\w\d._~:\-\/?#@!$&'\[\]()*+,;=%]+$/g.test(path) )//&& !/\/{2,}/g.test(path) )
+    else
+      return false
   }
 
   /**
@@ -391,8 +393,6 @@ module.exports = function(){
    * @param list {Array} Is always an array of variable names to permit overwriting.
    */
   this.saveThese = function saveThese (thing, list) {
-
-    failWhen( (notObject(thing) && notArray(thing)) || notArray(list), 'saveThese() called with invalid arguments.', arguments, 3 )
 
     // Saves a list of values to the variables named in the list array.
     if ( isArray(thing) && isArray(list) ) {
@@ -456,11 +456,7 @@ module.exports = function(){
    * @param path {String}
    * @return {Boolean}
    */
-  this.isFile = function isFile(path) {
-
-    failWhen( notString(path), 'ifFile requires a string!', path )
-    return fs.lstatSync( path ).isFile()
-  }
+  this.isFile = function isFile(path) {            return fs.lstatSync( path ).isFile()                }
   /**
    * @method filesHere
    * @for Exports
