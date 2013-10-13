@@ -72,12 +72,12 @@ module.exports = function(){
 
 
   /**
-   * This is the fail-fast system protection method. Always use with the typeof
+   * This is a fail-fast system protection method. Always use with the typeof
    * operator, like this: "ƒ(typeof [var])".
    *
    * OS X: alt+f. Windows: alt+159.
    *
-   * @method ƒ(typeof
+   * @method ƒ(typeof var)
    * @for Exports
    * @param enemy {Variable}
    * @param msg {String}
@@ -97,37 +97,46 @@ module.exports = function(){
       return true
   }
 
+
   /**
    * Just a shorthand for (typeof x === 'undefined').
    *
-   * OS X: alt+s. Windows: alt+0223.
-   *
-   * @method ß(typeof
+   * @method E(typeof var)
    * @for Exports
    * @param thing {Variable}
    * @return {Boolean}
    */
-  this.ß = function ß (/*typeof*/ thing) {
+  this.E = function E (/*typeof*/ thing) {
     return (thing === 'undefined')
   }
 
+
   /**
+   * This is a fail-fast system protection method. Can be used with E(typeof var)
+   * to do exactly the same thing as ƒ(typeof var), however allows you to test
+   * multiple conditions, like this:
+   *
+   * failWhen( E(typeof x) || E(typeof y), message, 1 )
+   *
    * @method failWhen
    * @for Exports
    * @param condition {Boolean}
    * @param msg {String}
-   * @param args {Array}
-   * @param level {String}
+   * @param lvl {String}
+   * return {Boolean}
    */
   // @throws {Error}
-  this.failWhen = function failWhen (condition, msg, args, level) {
-    if (isTruthy(condition)) {
-      var msg = (isString(msg)) ? msg : 'Error occurred in '+nameOf(this)
-      var level = (isString(level)) ? level.toLowerCase() : 'warn'
-      // log(msg, args, level)
-      throw new Error(msg, args)
+  this.failWhen = function failWhen (condition, msg, lvl) {
+
+    var msg = msg || ''
+    var lvl = lvl || 1
+
+    if ( condition ) {
+      SystemLogger.EpicFail(msg, lvl)
+      return false
     }
-    return true
+    else
+      return true
   }
 
 

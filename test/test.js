@@ -15,7 +15,7 @@ var newThing = new Thing()
       expect( SystemLogger ).to.be.an( 'object' )
 
       expect( ƒ ).to.be.a( 'function' )
-      expect( ß ).to.be.a( 'function' )
+      expect( E ).to.be.a( 'function' )
       expect( failWhen ).to.be.a( 'function' )
 
       expect( inArray ).to.be.a( 'function' )
@@ -62,7 +62,9 @@ var newThing = new Thing()
     })
   })
 
-  describe('ƒ(typeof, the fail-fast method',function(){
+
+
+  describe('ƒ(typeof var), a fail-fast method',function(){
     it('can properly detect, handle, and throw reference errors.',function(){
 
       SystemLogger.Use(function(){
@@ -98,6 +100,80 @@ var newThing = new Thing()
        * if ( ƒ(typeof x) ) {...}
        */
       expect( ƒ(typeof whatever, msg) ).to.be( false )
+    })
+  })
+
+
+
+  describe('E(typeof var), the existential method.',function(){
+    it('Evaluates to true when expected.',function(){
+      expect( E(typeof whatever) ).to.be( true )
+      expect( E(typeof undefined) ).to.be( true )
+      expect( E(typeof void 0) ).to.be( true )
+      expect( E('undefined') ).to.be( true )
+    })
+    it('Evaluates to false when expected.',function(){
+      expect( E(typeof SystemLogger) ).to.be( false )
+      expect( E(typeof new RegExp('')) ).to.be( false )
+      expect( E(typeof /^.$/g) ).to.be( false )
+      expect( E(typeof E) ).to.be( false )
+      expect( E(typeof {}) ).to.be( false )
+      expect( E(typeof []) ).to.be( false )
+      expect( E(typeof NaN) ).to.be( false )
+      expect( E(typeof 1) ).to.be( false )
+      expect( E(typeof 0) ).to.be( false )
+      expect( E(typeof '') ).to.be( false )
+    })
+  })
+
+
+
+  describe('failWhen(), a fail-fast method.',function(){
+    it('Properly detect, handle, and throw reference errors.',function(){
+
+      SystemLogger.Use(function(){
+        throw new ReferenceError()
+      })
+
+      expect(function(){
+        failWhen( E(typeof whatever) )
+      }).to.throwError(function(e){
+        expect( e ).to.be.a(ReferenceError)
+        expect( e ).to.not.be.a(SyntaxError)
+      })
+
+
+      expect(function(){
+        failWhen( E(typeof undefined) )
+      }).to.throwError()
+
+
+      expect(function(){
+        failWhen( E('undefined') )
+      }).to.throwError()
+    })
+
+
+    it('Invokes the predefined error handler.',function(done){
+      var msg = 'Send this out, expect() to get it back.'
+
+      function customErrorHandler (err) {
+        console.log('\nLevel: '+err.lvl, '\n'+err.stack)
+        expect( err ).to.be.a( ReferenceError )
+        expect( err.message ).to.be( msg )
+
+        done()
+      }
+
+      SystemLogger.Use(customErrorHandler)
+
+      /**
+       * Check for something that isn't defined. Also check that
+       * false is returned, indicating error we have an condition.
+       * This allows us to do things like
+       * if ( ƒ(typeof x) ) {...}
+       */
+      expect( failWhen( E(typeof whatever), msg) ).to.be( false )
     })
   })
 
@@ -171,7 +247,7 @@ var newThing = new Thing()
       expect( isType('', /$./g) ).to.be(false)
       expect( isType('', new RegExp('ab')) ).to.be(false)
     })
-    // check.only('isUndefined returns true or false',function(){
+    // check('isUndefined returns true or false',function(){
     //   expect( isUndefined(undefined) ).to.be(true)
     //   expect( isUndefined(void 0) ).to.be(true)
     //   expect( isUndefined((void 0)) ).to.be(true)
