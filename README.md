@@ -4,7 +4,11 @@ Foolproof.js
 ## Status: Beta
 
 Please do not rely on this package as it is still in development
-and will likely lead to unexpected behavior until further testing.
+and could produce unexpected behavior. If you have mocha and expect.js
+installed, you can run the tests from the project root using simply:
+```
+$ mocha
+```
 
 ## Description
 
@@ -17,7 +21,8 @@ conditions.
 
 * new (in dev branch):
   * SystemLogger - has Use() and EpicFail() methods.
-  * E(typeof var) - shorthand for (typeof var === 'undefined')
+  * E(typeof var) - shorthand for (typeof var !== 'undefined')
+  * U(typeof var) - shorthand for (typeof var === 'undefined')
   * failWhen() - a fail-fast method.
   * ƒ(typeof var) - a fail-fast method, always use with typeof. (in dev branch)
 * inArray()
