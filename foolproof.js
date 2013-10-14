@@ -391,6 +391,8 @@ module.exports = function(){
    * @param vars {Array}
    */
   this.urlParser = function urlParser (regex, url, vars) {
+    failWhen( notRegex(regex) || notValidPath(url), 'urlParser() received invalid arguments.', 1 )
+    
     var args
     args = regex.exec(url)
     args = (args) ? args.slice(1) : []
@@ -428,7 +430,7 @@ module.exports = function(){
    * @param path {String}
    * @return {Boolean}
    */
-  this.isFile = function isFile(path) {            return fs.lstatSync( path ).isFile()                }
+  this.isFile    = function isFile(path){          return fs.lstatSync( path ).isFile()                }
   /**
    * @method filesHere
    * @for Exports
@@ -452,7 +454,7 @@ module.exports = function(){
    * @param path {String}
    * @return {String}
    */
-  this.fileName  = function fileName(path){        return pth.basename(path, type.replace(/^\b/,'.'))  }
+  this.fileName  = function fileName(path){        return pth.basename(path.replace(/\.\w*?$/g, ''))   }
 
   /**
    * @method fileName
@@ -460,7 +462,7 @@ module.exports = function(){
    * @param path {String}
    * @return {String}
    */
-  this.loadFile  = function fileName(file, encoding) {
+  this.loadFile  = function loadFile(file, encoding) {
     var encode = (isString(encoding)) ? encoding : 'utf8'
     if (isFile(file))
       return fs.readFileSync(file, encoding)
