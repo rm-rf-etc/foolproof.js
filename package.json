@@ -1,6 +1,6 @@
 {
   "name": "foolproof",
-  "version": "0.0.3",
+  "version": "0.0.31",
   "status": "beta",
   "author": "Rob Christian",
   "description": "Foolproof (currently in beta) is a type checking helper functions library.",
