@@ -91,7 +91,8 @@ var newThing = new Thing()
       var msg = 'Send this out, expect() to get it back.'
 
       function customErrorHandler (err) {
-        console.log('\nLevel: '+err.lvl, '\n'+err.stack)
+        console.log("\n\nWe expected an error, here's what it looks like:")
+        console.log('\nLevel: '+err.lvl, '\n'+err.stack, '\n')
         expect( err ).to.be.a( ReferenceError )
         expect( err.message ).to.be( msg )
 
@@ -164,7 +165,8 @@ var newThing = new Thing()
       var msg = 'Send this out, expect() to get it back.'
 
       function customErrorHandler (err) {
-        console.log('\nLevel: '+err.lvl, '\n'+err.stack)
+        console.log("\n\nWe expected an error, here's what it looks like:")
+        console.log('\nLevel: '+err.lvl, '\n'+err.stack, '\n')
         expect( err ).to.be.a( ReferenceError )
         expect( err.message ).to.be( msg )
 
@@ -181,6 +183,7 @@ var newThing = new Thing()
       SystemLogger.Use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
+        expect( err.message ).to.be( msg )
         go2()
       })
       expect( failWhen( U(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
@@ -189,6 +192,7 @@ var newThing = new Thing()
         SystemLogger.Use(function (err) {
           expect( err ).to.be.a( SyntaxError )
           expect( err.lvl ).to.be( 1 )
+          expect( err.message ).to.be( msg )
           go3()
         })
         expect( failWhen( U(typeof whatever), msg, 1, SyntaxError) ).to.be( false )
@@ -198,6 +202,7 @@ var newThing = new Thing()
         SystemLogger.Use(function (err) {
           expect( err ).to.be.a( EvalError )
           expect( err.lvl ).to.be( 1 )
+          expect( err.message ).to.be( msg )
           go4()
         })
         expect( failWhen( U(typeof whatever), msg, 1, EvalError) ).to.be( false )
@@ -206,6 +211,7 @@ var newThing = new Thing()
         SystemLogger.Use(function (err) {
           expect( err ).to.be.a( RangeError )
           expect( err.lvl ).to.be( 1 )
+          expect( err.message ).to.be( msg )
           go5()
         })
         expect( failWhen( U(typeof whatever), msg, 1, RangeError) ).to.be( false )
@@ -214,6 +220,7 @@ var newThing = new Thing()
         SystemLogger.Use(function (err) {
           expect( err ).to.be.a( TypeError )
           expect( err.lvl ).to.be( 1 )
+          expect( err.message ).to.be( msg )
           go6()
         })
         expect( failWhen( U(typeof whatever), msg, 1, TypeError) ).to.be( false )
@@ -222,6 +229,7 @@ var newThing = new Thing()
         SystemLogger.Use(function (err) {
           expect( err ).to.be.a( URIError )
           expect( err.lvl ).to.be( 1 )
+          expect( err.message ).to.be( msg )
           done()
         })
         expect( failWhen( U(typeof whatever), msg, 1, URIError) ).to.be( false )
@@ -688,10 +696,53 @@ var newThing = new Thing()
     })
   })
 
-/*
-  describe.only('urlParser',function(){
-    //
+  describe('urlParser',function(){
+    it('Throws error on invalid input, error has expected type and message',function(){
+
+      function customErrorHandler (err) {
+        expect( err ).to.be.a( ReferenceError )
+        expect( err.message ).to.be( 'urlParser() received invalid arguments.' )
+        done()
+      }
+
+      SystemLogger.Use(customErrorHandler)
+      expect( function(){ urlParser(undefined, undefined) } ).to.throwError()
+    })
+    it("Returns empty array when pattern and string don't match",function(){
+      // var path = standardizePath('a/b/asdf/c')
+      var path = 'a/b/asdf/c' // no trailing slash.
+      var args = urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path) // has trailing slash.
+
+      expect( args ).to.have.length(0)
+      expect( args ).to.be.an(Array)
+    })
+    it('Returns array for capture groups',function(){
+
+      var path1 = standardizePath('a/b/asdf/c')
+      expect( urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.be.an(Array)
+      expect( urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.have.length(1)
+      expect( urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.contain('asdf')
+
+      var path2 = standardizePath('a/b/asdf/1234/c')
+      var args2 = urlParser(/^a\/b\/([^\/]*)\/([^\/]*)\/c\/$/g, path2)
+      expect( args2 ).to.have.length(2)
+      expect( args2 ).to.contain('asdf')
+      expect( args2 ).to.contain('1234')
+    })
+    it('Returns object with expected params, if params are provided.',function(){
+      
+      var path = standardizePath('a/5/asdf/c')
+      var args = urlParser(/^a\/([^\/]*)\/([^\/]*)\/c\/$/g, path, ['index','name'])
+
+      expect( args ).to.be.an(Object)
+      expect( args ).to.have.property('name')
+      expect( args ).to.have.property('index')
+      expect( args ).to.eql({index:'5',name:'asdf'})
+
+      console.log( '\n\t\t\t\t\t\t', args )
+    })
   })
+/*
   describe.only('isFolder',function(){
     //
   })

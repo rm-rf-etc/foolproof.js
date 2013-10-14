@@ -391,6 +391,8 @@ module.exports = function(){
    * @param vars {Array}
    */
   this.urlParser = function urlParser (regex, url, vars) {
+    failWhen( notRegex(regex) || notValidPath(url), 'urlParser() received invalid arguments.', 1 )
+    
     var args
     args = regex.exec(url)
     args = (args) ? args.slice(1) : []
