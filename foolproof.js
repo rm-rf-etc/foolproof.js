@@ -38,12 +38,11 @@ module.exports = function(){
      * @for SystemLogger
      * @param msg {String} text that will go into the error.
      * @param lvl {Number} level value that will go into the error.
-     * @param type {Error} optional, include if you don't want a ReferenceError.
+     * @param typ {Error} optional, include if you don't want a ReferenceError.
+     * @param req {Error} optional, for future integration with node server.
      */
     function EpicFail (msg, lvl, typ, req) {
       var msg = msg || 'No error message was defined for this condition.'
-
-      // console.log('type is:', typ)
 
       var err
       if ( E(typeof typ) )
@@ -59,10 +58,13 @@ module.exports = function(){
     /**
      * @method Use
      * @for SystemLogger
-     * @param alternate {Function} Set a custom error handler. Will receive an Error object.
+     * @param alternate {Function} Set a custom error handler. Will receive an Error object (pass Null to reset).
      */
     function Use (alternate) {
-      func = alternate
+      if ( isFunction(alternate) )
+        func = alternate
+      else if ( isFalsey(alternate) )
+        func = CaughtOnCamera
     }
 
     return {
