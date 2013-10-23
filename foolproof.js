@@ -120,11 +120,11 @@ module.exports = function(){
 
 
   /**
-   * This is a fail-fast system protection method. Can be used with E(typeof var)
+   * This is a fail-fast system protection method. Can be used with U(typeof var)
    * to do exactly the same thing as ƒ(typeof var), however allows you to test
    * multiple conditions, like this:
    *
-   * failWhen( E(typeof x) || E(typeof y), message, 1 )
+   * failWhen( U(typeof x) || U(typeof y), message, 1 )
    *
    * @method failWhen
    * @for Exports
