@@ -12,10 +12,10 @@ module.exports = function(){
 
   /**
    * Allows custom error handling.
-   * @class SystemLogger
+   * @class fSystemLogger
    * @for Exports
    */
-  this.SystemLogger = (function(){
+  this.fSystemLogger = (function(){
 
     /*`'~.,.~'`*\
        private
@@ -35,7 +35,7 @@ module.exports = function(){
     /**
      * Call this when everything goes really wrong.
      * @method EpicFail
-     * @for SystemLogger
+     * @for fSystemLogger
      * @param msg {String} text that will go into the error.
      * @param lvl {Number} level value that will go into the error.
      * @param typ {Error} optional, include if you don't want a ReferenceError.
@@ -57,7 +57,7 @@ module.exports = function(){
 
     /**
      * @method Use
-     * @for SystemLogger
+     * @for fSystemLogger
      * @param alternate {Function} Set a custom error handler. Will receive an Error object (pass Null to reset).
      */
     function Use (alternate) {
@@ -72,6 +72,19 @@ module.exports = function(){
       Use: Use
     }
   })()
+
+
+
+  /**
+   * Die and dump.
+   * @method dd
+   * @for Exports
+   * @param arguments {Arguments}
+   */
+  this.dd = function dd () {
+    console.log(arguments)
+    process.exit()
+  }
 
 
 
@@ -111,7 +124,7 @@ module.exports = function(){
     var typ = typ || undefined
 
     if (enemy === 'undefined') {
-      SystemLogger.EpicFail(msg, lvl, typ)
+      fSystemLogger.EpicFail(msg, lvl, typ)
       return false
     }
     else
@@ -141,7 +154,7 @@ module.exports = function(){
     var typ = typ || undefined
 
     if ( condition ) {
-      SystemLogger.EpicFail(msg, lvl, typ)
+      fSystemLogger.EpicFail(msg, lvl, typ)
       return false
     }
     else
@@ -457,6 +470,14 @@ module.exports = function(){
    * @return {String}
    */
   this.fileName  = function fileName(path){        return pth.basename(path.replace(/\.\w*?$/g, ''))   }
+
+  /**
+   * @method fullPath
+   * @for Exports
+   * @param path {String}
+   * @return {String}
+   */
+  this.fullPath  = function fullPath(path){        return pth.resolve(path)                            }
 
   /**
    * @method fileName
