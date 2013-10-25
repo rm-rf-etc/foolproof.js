@@ -872,6 +872,7 @@ var newThing = new Thing()
     var thing = { a: { b: { c: { d: { e: "whatever"}}}}}
 
     it('returns the last property specified',function(){
+      expect( findProperty(thing, 'a') ).to.eql( { b: { c: { d: { e: "whatever"}}}} )
       expect( findProperty(thing, 'a.b') ).to.eql( { c: { d: { e: "whatever"}}} )
       expect( findProperty(thing, 'a.b.c') ).to.eql( { d: { e: "whatever"}} )
       expect( findProperty(thing, 'a.b.c.d') ).to.eql( { e: "whatever"} )
@@ -879,6 +880,7 @@ var newThing = new Thing()
     })
     it("returns false when property doesn't exist",function(){
       expect( findProperty(thing, 'a.b.z') ).to.be(false)
+      expect( findProperty(thing, 'z') ).to.be(false)
     })
   })
 
