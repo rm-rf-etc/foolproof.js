@@ -24,6 +24,7 @@ conditions.
 * U(typeof var) - shorthand for (typeof var === 'undefined')
 * failWhen() - a fail-fast method.
 * ƒ(typeof var) - a fail-fast method, always use with typeof.
+* findProperty(obj, 'chain.of.properties') - climbs the 'obj' object, returns the last property or false if no match.
 * inArray()
 * typeOf()
 * isType()
