@@ -282,6 +282,14 @@ module.exports = function(){
   this.isNull = function isNull (thing) {             return (typeOf(thing) === 'null')       }
 
   /**
+   * @method isNull
+   * @for Exports
+   * @param thing {any object}
+   * @return {Boolean}
+   */
+  this.isNumber = function isNumber (thing) {         return (typeOf(thing) === 'number')     }
+
+  /**
    * @method isTruthy
    * @for Exports
    * @param thing {any object}
@@ -353,6 +361,14 @@ module.exports = function(){
    * @return {Boolean}
    */
   this.notNull = function notNull (thing) {               return !isNull (thing)         }
+
+  /**
+   * @method notNull
+   * @for Exports
+   * @param thing {any object}
+   * @return {Boolean}
+   */
+  this.notNumber = function notNumber (thing) {           return !isNumber (thing)       }
 
 
   /**

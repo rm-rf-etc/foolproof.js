@@ -17,9 +17,9 @@ var newThing = new Thing()
   describe('Helpers',function(){
     it('Created expected methods in this context',function(){
 
-      expect( SystemLogger ).to.be.an( 'object' )
-      expect( SystemLogger.Use ).to.be.an( 'function' )
-      expect( SystemLogger.EpicFail ).to.be.an( 'function' )
+      expect( fSystemLogger ).to.be.an( 'object' )
+      expect( fSystemLogger.Use ).to.be.an( 'function' )
+      expect( fSystemLogger.EpicFail ).to.be.an( 'function' )
 
       expect( ƒ ).to.be.a( 'function' )
       expect( E ).to.be.a( 'function' )
@@ -35,6 +35,7 @@ var newThing = new Thing()
       expect( isRegex ).to.be.a( 'function' )
       expect( isArray ).to.be.a( 'function' )
       expect( isNull ).to.be.a( 'function' )
+      expect( isNumber ).to.be.a( 'function' )
       expect( isTruthy ).to.be.a( 'function' )
       expect( isFalsey ).to.be.a( 'function' )
 
@@ -44,6 +45,7 @@ var newThing = new Thing()
       expect( notRegex ).to.be.a( 'function' )
       expect( notArray ).to.be.a( 'function' )
       expect( notNull ).to.be.a( 'function' )
+      expect( notNumber ).to.be.a( 'function' )
 
       expect( standardizePath ).to.be.a( 'function' )
       expect( isValidPath ).to.be.a( 'function' )
@@ -58,13 +60,13 @@ var newThing = new Thing()
     })
   })
 
-  describe('SystemLogger',function(){
+  describe('fSystemLogger',function(){
     it('Exists as an object',function(){
-      expect( SystemLogger ).to.be.an('object')
+      expect( fSystemLogger ).to.be.an('object')
     })
     it('Has expected methods, Use() and EpicFail()',function(){
-      expect( SystemLogger ).to.have.property( 'Use' )
-      expect( SystemLogger ).to.have.property( 'EpicFail' )
+      expect( fSystemLogger ).to.have.property( 'Use' )
+      expect( fSystemLogger ).to.have.property( 'EpicFail' )
     })
   })
 
@@ -76,7 +78,7 @@ var newThing = new Thing()
   describe('ƒ(typeof var), a fail-fast method',function(){
     it('can properly detect, handle, and throw reference errors',function(){
 
-      SystemLogger.Use(function(){
+      fSystemLogger.Use(function(){
         throw new ReferenceError()
       })
 
@@ -101,7 +103,7 @@ var newThing = new Thing()
         done()
       }
 
-      SystemLogger.Use(customErrorHandler)
+      fSystemLogger.Use(customErrorHandler)
       expect( ƒ(typeof whatever, msg) ).to.be( false )
     })
   })
@@ -119,7 +121,7 @@ var newThing = new Thing()
       expect( U('undefined') ).to.be( true )
     })
     it('Evaluates to false when expected',function(){
-      expect( U(typeof SystemLogger) ).to.be( false )
+      expect( U(typeof fSystemLogger) ).to.be( false )
       expect( U(typeof new RegExp('')) ).to.be( false )
       expect( U(typeof /^.$/g) ).to.be( false )
       expect( U(typeof E) ).to.be( false )
@@ -140,7 +142,7 @@ var newThing = new Thing()
   describe('failWhen(), a fail-fast method',function(){
     it('Properly detect, handle, and throw reference errors',function(){
 
-      SystemLogger.Use(function(){
+      fSystemLogger.Use(function(){
         throw new ReferenceError()
       })
 
@@ -175,14 +177,14 @@ var newThing = new Thing()
         done()
       }
 
-      SystemLogger.Use(customErrorHandler)
+      fSystemLogger.Use(customErrorHandler)
       expect( failWhen( U(typeof whatever), msg) ).to.be( false )
     })
 
     var msg = 'Send this out, expect() to get it back.'
 
     it('Throws whatever error object it is given',function(done){
-      SystemLogger.Use(function (err) {
+      fSystemLogger.Use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
         expect( err.message ).to.be( msg )
@@ -191,7 +193,7 @@ var newThing = new Thing()
       expect( failWhen( U(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
 
       function go2(){
-        SystemLogger.Use(function (err) {
+        fSystemLogger.Use(function (err) {
           expect( err ).to.be.a( SyntaxError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -201,7 +203,7 @@ var newThing = new Thing()
       }
 
       function go3(){
-        SystemLogger.Use(function (err) {
+        fSystemLogger.Use(function (err) {
           expect( err ).to.be.a( EvalError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -210,7 +212,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, EvalError) ).to.be( false )
       }
       function go4(){
-        SystemLogger.Use(function (err) {
+        fSystemLogger.Use(function (err) {
           expect( err ).to.be.a( RangeError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -219,7 +221,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, RangeError) ).to.be( false )
       }
       function go5(){
-        SystemLogger.Use(function (err) {
+        fSystemLogger.Use(function (err) {
           expect( err ).to.be.a( TypeError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -228,7 +230,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, TypeError) ).to.be( false )
       }
       function go6(){
-        SystemLogger.Use(function (err) {
+        fSystemLogger.Use(function (err) {
           expect( err ).to.be.a( URIError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -421,6 +423,24 @@ var newThing = new Thing()
       expect( isNull(3) ).to.be(false)
       expect( isNull(NaN) ).to.be(false)
     })
+    check('isNumber returns true or false',function(){
+      expect( isNumber(0) ).to.be(true)
+      expect( isNumber(3) ).to.be(true)
+
+      expect( isNumber(NaN) ).to.be(false)
+      expect( isNumber(null) ).to.be(false)
+      expect( isNumber('') ).to.be(false)
+      expect( isNumber('4') ).to.be(false)
+      expect( isNumber(/$./g) ).to.be(false)
+      expect( isNumber(new RegExp('ab')) ).to.be(false)
+      expect( isNumber( {} ) ).to.be(false)
+      expect( isNumber(newThing) ).to.be(false)
+      expect( isNumber(undefined) ).to.be(false)
+      expect( isNumber(void 0) ).to.be(false)
+      expect( isNumber((void 0)) ).to.be(false)
+      expect( isNumber(function(){}) ).to.be(false)
+      expect( isNumber([]) ).to.be(false)
+    })
     check('isTruthy returns true or false',function(){
       expect( isTruthy('4') ).to.be(true)
       expect( isTruthy(/$./g) ).to.be(true)
@@ -583,6 +603,22 @@ var newThing = new Thing()
       expect( notNull(3) ).to.be(true)
       expect( notNull(NaN) ).to.be(true)
     })
+    check('notNumber returns true or false',function(){
+      expect( notNumber(0) ).to.be(false)
+      expect( notNumber(3) ).to.be(false)
+
+      expect( notNumber(NaN) ).to.be(true)
+      expect( notNumber(null) ).to.be(true)
+      expect( notNumber(/$./g) ).to.be(true)
+      expect( notNumber(new RegExp('ab')) ).to.be(true)
+      expect( notNumber( {} ) ).to.be(true)
+      expect( notNumber( newThing ) ).to.be(true)
+      expect( notNumber(undefined) ).to.be(true)
+      expect( notNumber(void 0) ).to.be(true)
+      expect( notNumber((void 0)) ).to.be(true)
+      expect( notNumber(function(){}) ).to.be(true)
+      expect( notNumber([]) ).to.be(true)
+    })
     check('notType returns true or false',function(){
       expect( notType( /$./g,              null ) ).to.be(true)
       expect( notType( new RegExp('ab'),   null ) ).to.be(true)
@@ -672,7 +708,7 @@ var newThing = new Thing()
       expect( standardizePath('///stuff///places//////things///') ).to.be('stuff/places/things/')
     })
     it('Returns false and trips the error reporting system.',function(done){
-      SystemLogger.Use(function (err) {
+      fSystemLogger.Use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
         expect( err.message ).to.be('Path string is invalid.')
@@ -712,7 +748,7 @@ var newThing = new Thing()
         done()
       }
 
-      SystemLogger.Use(customErrorHandler)
+      fSystemLogger.Use(customErrorHandler)
       expect( function(){ urlParser(undefined, undefined) } ).to.throwError()
     })
     it("Returns empty array when pattern and string don't match",function(){
@@ -761,7 +797,7 @@ var newThing = new Thing()
       expect( isFolder('node_modules') ).to.be(true)
     })
     it('Returns true for folders in a relative path from the base directory',function(){
-      expect( isFolder('../foolproof') ).to.be(true)
+      expect( isFolder('../foolproof.js') ).to.be(true)
     })
     it('Returns false for files in the base directory',function(){
       expect( isFolder('foolproof.js') ).to.be(false)
@@ -832,9 +868,9 @@ var newThing = new Thing()
   /**
    *
    */
-  describe.only('findProperty',function(){
+  describe('findProperty',function(){
     var thing = { a: { b: { c: { d: { e: "whatever"}}}}}
-    
+
     it('returns the last property specified',function(){
       expect( findProperty(thing, 'a.b') ).to.eql( { c: { d: { e: "whatever"}}} )
       expect( findProperty(thing, 'a.b.c') ).to.eql( { d: { e: "whatever"}} )
