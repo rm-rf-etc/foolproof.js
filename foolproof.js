@@ -23,7 +23,8 @@ module.exports = function(){
 
     var func = CaughtOnCamera
 
-    function CaughtOnCamera (err) {
+    function CaughtOnCamera (err)
+    {
       console.log('Level: '+err.lvl, err, err.stack)
       throw err
     }
@@ -41,7 +42,8 @@ module.exports = function(){
      * @param typ {Error} optional, include if you don't want a ReferenceError.
      * @param req {Error} optional, for future integration with node server.
      */
-    function EpicFail (msg, lvl, typ, req) {
+    function EpicFail (msg, lvl, typ, req)
+    {
       var msg = msg || 'No error message was defined for this condition.'
 
       var err
@@ -60,7 +62,8 @@ module.exports = function(){
      * @for fSystemLogger
      * @param alternate {Function} Set a custom error handler. Will receive an Error object (pass Null to reset).
      */
-    function Use (alternate) {
+    function Use (alternate)
+    {
       if ( isFunction(alternate) )
         func = alternate
       else if ( isFalsey(alternate) )
@@ -81,10 +84,7 @@ module.exports = function(){
    * @for Exports
    * @param arguments {Arguments}
    */
-  this.dd = function dd () {
-    console.log(arguments)
-    process.exit()
-  }
+  this.dd = function dd () { console.log(arguments); process.exit() }
 
 
 
@@ -96,12 +96,8 @@ module.exports = function(){
    * @param thing {Variable}
    * @return {Boolean}
    */
-  this.U = function U (/*typeof*/ thing) {
-    return (thing === 'undefined')
-  }
-  this.E = function E (/*typeof*/ thing) {
-    return (thing !== 'undefined')
-  }
+  this.U = function U (/*typeof*/ thing) { return (thing === 'undefined') }
+  this.E = function E (/*typeof*/ thing) { return (thing !== 'undefined') }
 
 
   /**
@@ -117,8 +113,8 @@ module.exports = function(){
    * @param lvl {Number}
    * @return {Boolean}
    */
-  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl, typ, req) {
-    
+  this.ƒ = function ƒ (/*typeof*/ enemy, msg, lvl, typ, req)
+  {
     var msg = msg || undefined
     var lvl = lvl || undefined
     var typ = typ || undefined
@@ -147,8 +143,8 @@ module.exports = function(){
    * return {Boolean}
    */
   // @throws {Error}
-  this.failWhen = function failWhen (condition, msg, lvl, typ, req) {
-
+  this.failWhen = function failWhen (condition, msg, lvl, typ, req)
+  {
     var msg = msg || undefined
     var lvl = lvl || undefined
     var typ = typ || undefined
@@ -169,8 +165,8 @@ module.exports = function(){
    * @param haystack {Array}
    * @return {Boolean}
    */
-  this.inArray = function inArray (needle, haystack) {
-
+  this.inArray = function inArray (needle, haystack)
+  {
     for (var key in haystack)
       if (haystack[key] === needle) return true
 
@@ -183,8 +179,8 @@ module.exports = function(){
    * @param thing {String}
    * @return name {String} of thing
    */
-  this.nameOf = function nameOf (thing) {
-
+  this.nameOf = function nameOf (thing)
+  {
     if ( isFunction(thing) ) {
       if ( /^function\s\(/g.test(thing.toString()) )
         return 'Anonymous Function'
@@ -205,7 +201,8 @@ module.exports = function(){
    * @param thing {String}
    * @return type {String} Lower case only.
    */
-  this.typeOf = function typeOf (thing) {
+  this.typeOf = function typeOf (thing)
+  {
     switch (typeof thing) {
       case 'undefined':
         return 'undefined'
@@ -228,7 +225,8 @@ module.exports = function(){
    * @param type {String}
    * @return {Boolean}
    */
-  this.isType = function isType (thing, type) {
+  this.isType = function isType (thing, type)
+  {
     if (isString(type))
       return (typeOf(thing) === type)
     else
@@ -363,7 +361,8 @@ module.exports = function(){
    * @param path {any object} thing
    * @return {Boolean}
    */
-  this.standardizePath = function standardizePath (path) {
+  this.standardizePath = function standardizePath (path)
+  {
     if (path.length > 1) {
       path = path.replace(/\/{2,}/g, '/')
       path = path.replace(/^\//, '') // Remove potential leading slash.
@@ -383,7 +382,8 @@ module.exports = function(){
    * @param path {String}
    * @return {Boolean}
    */
-  this.isValidPath = function isValidPath (path) {
+  this.isValidPath = function isValidPath (path)
+  {
     if (isString(path))
       return ( /^[\w\d._~:\-\/?#@!$&'\[\]()*+,;=%]+$/g.test(path) )//&& !/\/{2,}/g.test(path) )
     else
@@ -405,7 +405,8 @@ module.exports = function(){
    * @param url {String}
    * @param vars {Array}
    */
-  this.urlParser = function urlParser (regex, url, vars) {
+  this.urlParser = function urlParser (regex, url, vars)
+  {
     failWhen( notRegex(regex) || notValidPath(url), 'urlParser() received invalid arguments.', 1 )
     
     var args
@@ -485,12 +486,39 @@ module.exports = function(){
    * @param path {String}
    * @return {String}
    */
-  this.loadFile  = function loadFile(file, encoding) {
+  this.loadFile  = function loadFile(file, encoding)
+  {
     var encode = (isString(encoding)) ? encoding : 'utf8'
     if (isFile(file))
       return fs.readFileSync(file, encoding)
     else
       return null
+  }
+
+  /**
+   * @method findProperty
+   * @for Exports
+   * @param obj {Object}
+   * @param chain {String}
+   */
+  this.findProperty = function findProperty(obj, chain)
+  {
+    var found = obj
+    var props = chain.split('.')
+
+    for (var i in props) {
+      var before = found
+
+      for (var e in found) {
+        if (e === props[i])
+          var found = found[props[i]]
+      }
+
+      if (before === found)
+        return false
+    }
+
+    return found
   }
 
 

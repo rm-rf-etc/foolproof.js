@@ -827,6 +827,25 @@ var newThing = new Thing()
     })
   })
 
+
+
+  /**
+   *
+   */
+  describe.only('findProperty',function(){
+    var thing = { a: { b: { c: { d: { e: "whatever"}}}}}
+    
+    it('returns the last property specified',function(){
+      expect( findProperty(thing, 'a.b') ).to.eql( { c: { d: { e: "whatever"}}} )
+      expect( findProperty(thing, 'a.b.c') ).to.eql( { d: { e: "whatever"}} )
+      expect( findProperty(thing, 'a.b.c.d') ).to.eql( { e: "whatever"} )
+      expect( findProperty(thing, 'a.b.c.d.e') ).to.be( "whatever" )
+    })
+    it("returns false when property doesn't exist",function(){
+      expect( findProperty(thing, 'a.b.z') ).to.be(false)
+    })
+  })
+
 /*
 */
   return this
