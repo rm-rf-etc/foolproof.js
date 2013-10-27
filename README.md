@@ -75,7 +75,7 @@ But it was intended to make the helper functions available natively
 in your app's context, like this:
 
 ```js
-var App = (function(){
+function Application (){
 
   require('foolproof').apply(this)
   
@@ -87,6 +87,6 @@ var App = (function(){
   console.log( isFunction( function(){} ) )
   // prints true
 
-  return this
-})()
+}
+var App = new Application()
 ```
