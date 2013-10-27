@@ -159,6 +159,7 @@ module.exports = function(){
 
 
   /**
+   * inArray(needle, haystack)
    * @method inArray
    * @for Exports
    * @param needle {any object}
@@ -172,6 +173,29 @@ module.exports = function(){
 
     return false
   }
+
+
+  /**
+   * @method removeItem
+   * @for Exports
+   * @param string {String}
+   * @param array {Array}
+   * @return {Array or False}
+   */
+  this.removeItem = function removeItem (string, array)
+  {
+    if ( inArray(string, array) ) {
+      var i = array.indexOf(string)
+
+      if (i !== -1) {
+        var result = array
+        result.splice(i,1)
+        return result
+      }
+    }
+    return false
+  }
+
 
   /**
    * @method nameOf
@@ -271,7 +295,7 @@ module.exports = function(){
    * @param thing {any object}
    * @return {Boolean}
    */
-  this.isArray = function isArray (thing) {           return (typeOf(thing) === 'array')      }
+  this.isArray = Array.isArray
 
   /**
    * @method isNull
@@ -282,12 +306,23 @@ module.exports = function(){
   this.isNull = function isNull (thing) {             return (typeOf(thing) === 'null')       }
 
   /**
-   * @method isNull
+   * @method isNumber
    * @for Exports
    * @param thing {any object}
    * @return {Boolean}
    */
   this.isNumber = function isNumber (thing) {         return (typeOf(thing) === 'number')     }
+
+  /**
+   * Credit goes to: http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+   * @method isNumeric
+   * @for Exports
+   * @param thing {any object}
+   * @return {Boolean}
+   */
+  this.isNumeric = function isNumeric (thing) {
+    return !isNaN(parseFloat(thing)) && isFinite(thing)
+  }
 
   /**
    * @method isTruthy

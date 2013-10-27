@@ -884,6 +884,36 @@ var newThing = new Thing()
     })
   })
 
+
+  /**
+   *
+   */
+  describe('removeItem',function(){
+    it('removes the specified element, modifying the original array',function(){
+      var thing
+      thing = ['a','b','c','d']
+      removeItem('d', thing)
+      expect( thing ).to.eql(['a','b','c'])
+
+      thing = ['a','b','c','d']
+      removeItem('c', thing)
+      expect( thing ).to.eql(['a','b','d'])
+
+      thing = ['a','b','c','d']
+      removeItem('b', thing)
+      expect( thing ).to.eql(['a','c','d'])
+
+      thing = ['a','b','c','d']
+      removeItem('a', thing)
+      expect( thing ).to.eql(['b','c','d'])
+    })
+    it('return false when element is not in array and leaves array unchanged',function(){
+      var thing = ['a','b','c','d']
+      expect( removeItem('z', thing) ).to.eql( false )
+      expect( thing ).to.eql( ['a','b','c','d'] )
+    })
+  })
+
 /*
 */
   return this
