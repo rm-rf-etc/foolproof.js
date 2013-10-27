@@ -3,10 +3,11 @@ Foolproof.js
 
 ## Status: Beta
 
-Please do not rely on this package as it is still in development
-and could produce unexpected behavior. If you have mocha and expect.js
-installed, you can run the tests from the project root using simply:
+Please refer to the test file. To run it, simply get expect.js and mocha, and run mocha, like this:
 ```
+$ cd ~/YourProject/
+$ npm install expect.js
+$ npm install -g mocha
 $ mocha
 ```
 
@@ -19,13 +20,14 @@ conditions.
 
 ## Functions:
 
-* SystemLogger - has Use() and EpicFail() methods.
+* SystemLogger - has Use() and EpicFail() methods, allows setting of a custom error handler.
 * E(typeof var) - shorthand for (typeof var !== 'undefined')
 * U(typeof var) - shorthand for (typeof var === 'undefined')
-* failWhen() - a fail-fast method.
+* failWhen(condition, message, level, errorType) - a fail-fast method, invokes SystemLogger.EpicFail() when condition is true.
 * ƒ(typeof var) - a fail-fast method, always use with typeof.
 * findProperty(obj, 'parent.child.property') - Access any properties/sub-properties of obj using dot notation (false if no match).
-* inArray()
+* removeItem(needle, haystack) - modifies haystack, removing the item which strictly matches needle.
+* inArray(needle, haystack)
 * typeOf()
 * isType()
 * ~~isUndefined()~~
