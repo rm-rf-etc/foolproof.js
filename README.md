@@ -59,34 +59,30 @@ will add it to your node_modules folder.
 How to Include Foolproof.js
 -----------------------------
 
-Foolproof gives you a couple options. Mainly we want to make it
-easy to use the helper functions as you would any other native JS
-feature.
-
-You could use it like this:
+Foolproof exports a constructor function. If you want the helper
+functions to be available in the global context, simply invoke
+the function, like this:
 
 ```js
-var fp = require('foolproof')()
+require('foolproof')()
 
-console.log( fp.isString('this is a demo') )
+console.log( isString('this is a demo') )
+// prints true
+  
+console.log( isFunction( function(){} ) )
+// prints true
 ```
 
-But it was intended to make the helper functions available natively
-in your app's context, like this:
+If you would rather attach them to a namespace object, use the
+new keyword, like this:
 
 ```js
-function Application (){
+var Fp = require('foolproof')
+var fp = new Fp()
 
-  require('foolproof').apply(this)
+console.log( fp.isString('this is a demo') )
+// prints true
   
-  // and now you have new methods, natively.
-
-  console.log( isString('this is a demo') )
-  // prints true
-  
-  console.log( isFunction( function(){} ) )
-  // prints true
-
-}
-var App = new Application()
+console.log( fp.isFunction( function(){} ) )
+// prints true
 ```

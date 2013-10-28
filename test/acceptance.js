@@ -7,8 +7,7 @@ var newThing = new Thing()
 
 
 ;(function(){
-  require('../foolproof').apply(this)
-
+  require('../foolproof')()
 
 
   /**
