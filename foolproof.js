@@ -84,7 +84,7 @@ module.exports = function(){
    * @for Exports
    * @param arguments {Arguments}
    */
-  this.dd = function dd () { console.log(arguments); process.exit() }
+  this.dd = function dd () { console.log.apply(null, arguments); process.exit() }
 
 
 
