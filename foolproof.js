@@ -532,9 +532,18 @@ module.exports = function(){
   this.fullPath  = function fullPath(path){        return pth.resolve(path)                            }
 
   /**
-   * @method fileName
+   * @method parentFolder
    * @for Exports
-   * @param path {String}
+   * @param file {String}
+   * @return {String}
+   */
+  this.parentFolder = function parentFolder(file){ return /\/([^\/]+)\/[^\/]+$/g.exec(fullPath(file))  }
+
+  /**
+   * @method loadFile
+   * @for Exports
+   * @param file {String}
+   * @param encoding {String}
    * @return {String}
    */
   this.loadFile  = function loadFile(file, encoding)
