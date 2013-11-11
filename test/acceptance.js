@@ -91,7 +91,7 @@ var newThing = new Thing()
 
 
     it('invokes the predefined error handler',function(done){
-      var msg = 'Send this out, expect() to get it back.'
+      var msg = 'Send this out, expect() to get it back'
 
       function customErrorHandler (err) {
         console.log("\n\nWe're expecting an error, it should have level 1: "+err.lvl)
@@ -165,7 +165,7 @@ var newThing = new Thing()
 
 
     it('Invokes the predefined error handler',function(done){
-      var msg = 'Send this out, expect() to get it back.'
+      var msg = 'Send this out, expect() to get it back'
 
       function customErrorHandler (err) {
         console.log("\n\nWe're expecting an error, it should have level 1: "+err.lvl)
@@ -180,7 +180,7 @@ var newThing = new Thing()
       expect( failWhen( U(typeof whatever), msg) ).to.be( false )
     })
 
-    var msg = 'Send this out, expect() to get it back.'
+    var msg = 'Send this out, expect() to get it back'
 
     it('Throws whatever error object it is given',function(done){
       fSystemLogger.Use(function (err) {
@@ -687,6 +687,7 @@ var newThing = new Thing()
       */
     })
     it('should return false',function(){
+      expect( inArray('', [])     ).to.be( false )
       expect( inArray('', array)  ).to.be( false )
       expect( inArray({}, array)  ).to.be( false )
       expect( inArray([], array)  ).to.be( false )
@@ -706,11 +707,11 @@ var newThing = new Thing()
       expect( standardizePath('/stuff///places/things') ).to.be('stuff/places/things/')
       expect( standardizePath('///stuff///places//////things///') ).to.be('stuff/places/things/')
     })
-    it('Returns false and trips the error reporting system.',function(done){
+    it('Returns false and trips the error reporting system',function(done){
       fSystemLogger.Use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
-        expect( err.message ).to.be('Path string is invalid.')
+        expect( err.message ).to.be('Path string is invalid')
         done()
       })
       expect( standardizePath('') ).to.be(false)
@@ -743,7 +744,7 @@ var newThing = new Thing()
 
       function customErrorHandler (err) {
         expect( err ).to.be.a( ReferenceError )
-        expect( err.message ).to.be( 'urlParser() received invalid arguments.' )
+        expect( err.message ).to.be( 'urlParser() received invalid arguments' )
         done()
       }
 
@@ -771,7 +772,7 @@ var newThing = new Thing()
       expect( args2 ).to.contain('asdf')
       expect( args2 ).to.contain('1234')
     })
-    it('Returns object with expected params, if params are provided.',function(){
+    it('Returns object with expected params, if params are provided',function(){
       
       var path = standardizePath('a/5/asdf/c')
       var args = urlParser(/^a\/([^\/]*)\/([^\/]*)\/c\/$/g, path, ['index','name'])
