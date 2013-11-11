@@ -240,13 +240,10 @@ module.exports = function(){
         if ( inArray(string, array) ) {
             var i = array.indexOf(string)
 
-            if (i !== -1) {
-                var result = array
-                result.splice(i,1)
-                return result
-            }
+            if (i !== -1)
+                return array.splice(i,1)
         }
-        return false
+        return array
     }
 
 
