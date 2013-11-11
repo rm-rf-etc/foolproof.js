@@ -176,6 +176,56 @@ module.exports = function(){
 
 
   /**
+   * concatUnique(existing, additional)
+   * @method concatUnique
+   * @for Exports
+   * @param existing {Array}
+   * @param additional {Array}
+   * @return {Array}
+   */
+  this.concatUnique = function concatUnique (existing, additional)
+  {
+    if (isArray(additional))
+      if (additional.length < 1) return
+
+    if (isArray(existing)) {
+      [].concat(additional).map(function(each){
+        if (!inArray(each,existing))
+          existing = existing.concat(each)
+      })
+    }
+    return existing
+  }
+
+
+  /**
+   * findUnique(existing, needles)
+   * @method findUnique
+   * @for Exports
+   * @param needles {Array}
+   * @param haystack {Array}
+   * @return {Array or Null}
+   */
+  this.findUnique = function findUnique (haystack, needles)
+  {
+    if (isArray(needles))
+      if (needles.length < 1) return
+
+    if (isArray(haystack)) {
+      if (haystack.length < 1) return
+
+      var result = []
+      [].concat(needles).map(function(each){
+        if (!inArray(each,haystack))
+          result = result.concat(each)
+      })
+      return (result.length < 1) ? null : result
+    }
+    return null
+  }
+
+
+  /**
    * @method removeItem
    * @for Exports
    * @param string {String}
