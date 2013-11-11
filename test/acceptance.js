@@ -711,7 +711,7 @@ var newThing = new Thing()
       fSystemLogger.Use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
-        expect( err.message ).to.be('Path string is invalid')
+        expect( err.message ).to.be('Path string is invalid.')
         done()
       })
       expect( standardizePath('') ).to.be(false)
