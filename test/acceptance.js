@@ -797,7 +797,7 @@ var newThing = new Thing()
       expect( isFolder('node_modules') ).to.be(true)
     })
     it('Returns true for folders in a relative path from the base directory',function(){
-      expect( isFolder('../foolproof.js') ).to.be(true)
+      expect( isFolder('../foolproof') ).to.be(true)
     })
     it('Returns false for files in the base directory',function(){
       expect( isFolder('foolproof.js') ).to.be(false)
@@ -907,14 +907,28 @@ var newThing = new Thing()
       removeItem('a', thing)
       expect( thing ).to.eql(['b','c','d'])
     })
-    it('return false when element is not in array and leaves array unchanged',function(){
+    it('do nothing when element is not present',function(){
       var thing = ['a','b','c','d']
-      expect( removeItem('z', thing) ).to.eql( false )
-      expect( thing ).to.eql( ['a','b','c','d'] )
+      expect( removeItem('z', thing) ).to.eql( ['a','b','c','d'] )
     })
   })
 
-/*
-*/
+
+  /**
+   *
+   */
+  describe('objExtend',function(){
+    var A = {a:'a',b:'b'}
+    it('adds new properties to existing object',function(){
+      expect( objExtend(A,{c:'c'}) ).to.eql( {a:'a',b:'b',c:'c'} )
+      expect( A ).to.eql( {a:'a',b:'b',c:'c'} )
+    })
+    it('replaces existing values',function(){
+      expect( objExtend(A,{c:'-',d:'d'}) ).to.eql( {a:'a',b:'b',c:'-',d:'d'} )
+      expect( A ).to.eql( {a:'a',b:'b',c:'-',d:'d'} )
+      console.log( A )
+    })
+  })
+
   return this
 })()
