@@ -17,9 +17,8 @@ var newThing = new Thing()
     it('Created expected methods in this context',function(){
 
       expect( fSystemLogger ).to.be.an( 'object' )
-      expect( fSystemLogger.Use ).to.be.an( 'function' )
-      expect( fSystemLogger.EpicFail ).to.be.an( 'function' )
-
+      expect( fSystemLogger.use ).to.be.an( 'function' )
+      expect( fSystemLogger.epicFail ).to.be.anu 'function' )e
       expect( ƒ ).to.be.a( 'function' )
       expect( E ).to.be.a( 'function' )
       expect( failWhen ).to.be.a( 'function' )
@@ -63,9 +62,9 @@ var newThing = new Thing()
     it('Exists as an object',function(){
       expect( fSystemLogger ).to.be.an('object')
     })
-    it('Has expected methods, Use() and EpicFail()',function(){
-      expect( fSystemLogger ).to.have.property( 'Use' )
-      expect( fSystemLogger ).to.have.property( 'EpicFail' )
+    it('Has expected methods, use() and epicFail()',function(){
+      expect( fSystemLogger ).to.have.property( 'use' )
+      expect( fSystemLogger ).to.have.property( 'epicFail' )
     })
   })
 
@@ -77,7 +76,7 @@ var newThing = new Thing()
   describe('ƒ(typeof var), a fail-fast method',function(){
     it('can properly detect, handle, and throw reference errors',function(){
 
-      fSystemLogger.Use(function(){
+      fSystemLogger.use(function(){
         throw new ReferenceError()
       })
 
@@ -102,7 +101,7 @@ var newThing = new Thing()
         done()
       }
 
-      fSystemLogger.Use(customErrorHandler)
+      fSystemLogger.use(customErrorHandler)
       expect( ƒ(typeof whatever, msg) ).to.be( false )
     })
   })
@@ -141,7 +140,7 @@ var newThing = new Thing()
   describe('failWhen(), a fail-fast method',function(){
     it('Properly detect, handle, and throw reference errors',function(){
 
-      fSystemLogger.Use(function(){
+      fSystemLogger.use(function(){
         throw new ReferenceError()
       })
 
@@ -176,14 +175,14 @@ var newThing = new Thing()
         done()
       }
 
-      fSystemLogger.Use(customErrorHandler)
+      fSystemLogger.use(customErrorHandler)
       expect( failWhen( U(typeof whatever), msg) ).to.be( false )
     })
 
     var msg = 'Send this out, expect() to get it back'
 
     it('Throws whatever error object it is given',function(done){
-      fSystemLogger.Use(function (err) {
+      fSystemLogger.use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
         expect( err.message ).to.be( msg )
@@ -192,7 +191,7 @@ var newThing = new Thing()
       expect( failWhen( U(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
 
       function go2(){
-        fSystemLogger.Use(function (err) {
+        fSystemLogger.use(function (err) {
           expect( err ).to.be.a( SyntaxError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -202,7 +201,7 @@ var newThing = new Thing()
       }
 
       function go3(){
-        fSystemLogger.Use(function (err) {
+        fSystemLogger.use(function (err) {
           expect( err ).to.be.a( EvalError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -211,7 +210,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, EvalError) ).to.be( false )
       }
       function go4(){
-        fSystemLogger.Use(function (err) {
+        fSystemLogger.use(function (err) {
           expect( err ).to.be.a( RangeError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -220,7 +219,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, RangeError) ).to.be( false )
       }
       function go5(){
-        fSystemLogger.Use(function (err) {
+        fSystemLogger.use(function (err) {
           expect( err ).to.be.a( TypeError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -229,7 +228,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, TypeError) ).to.be( false )
       }
       function go6(){
-        fSystemLogger.Use(function (err) {
+        fSystemLogger.use(function (err) {
           expect( err ).to.be.a( URIError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )

@@ -20,9 +20,9 @@ module.exports = function(){
         /*`'~.,.~'`*\
            private
         \*,.~'`'~.,*/
-        var func = CaughtOnCamera
+        var func = caughtOnCamera
 
-        function CaughtOnCamera (err) {
+        function caughtOnCamera (err) {
             console.log('Level: '+err.lvl, err, err.stack)
             throw err
         }
@@ -33,14 +33,14 @@ module.exports = function(){
 
         /**
          * Call this when everything goes really wrong.
-         * @method EpicFail
+         * @method epicFail
          * @for fSystemLogger
          * @param msg {String} text that will go into the error.
          * @param lvl {Number} level value that will go into the error.
          * @param typ {Error} optional, include if you don't want a ReferenceError.
          * @param req {Error} optional, for future integration with node server.
          */
-        function EpicFail (msg, lvl, typ, req) {
+        function epicFail (msg, lvl, typ, req) {
             var msg = msg || 'No error message was defined for this condition.'
 
             var err
@@ -55,20 +55,20 @@ module.exports = function(){
         }
 
         /**
-         * @method Use
+         * @method use
          * @for fSystemLogger
          * @param alternate {Function} Set a custom error handler. Will receive an Error object (pass Null to reset).
          */
-        function Use (alternate) {
+        function use (alternate) {
             if ( isFunction(alternate) )
                 func = alternate
             else if ( isFalsey(alternate) )
-                func = CaughtOnCamera
+                func = caughtOnCamera
         }
 
         return {
-            EpicFail: EpicFail,
-            Use: Use
+            epicFail: epicFail,
+            use: use
         }
     })()
 
@@ -116,7 +116,7 @@ module.exports = function(){
         var typ = typ || undefined
 
         if (enemy === 'undefined') {
-            fSystemLogger.EpicFail(msg, lvl, typ)
+            fSystemLogger.epicFail(msg, lvl, typ)
             return false
         }
         else
@@ -146,7 +146,7 @@ module.exports = function(){
         var typ = typ || undefined
 
         if ( condition ) {
-            fSystemLogger.EpicFail(msg, lvl, typ)
+            fSystemLogger.epicFail(msg, lvl, typ)
             return false
         }
         else
