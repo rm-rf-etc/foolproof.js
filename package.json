@@ -1,9 +1,9 @@
 {
   "name": "foolproof",
-  "version": "0.0.5-beta",
+  "version": "0.0.6-beta",
   "status": "beta",
   "author": "Rob Christian",
-  "description": "Foolproof is a type-checking and error-detection helpers library. Version 0.0.5-beta is an important update. Please review the readme usage instructions.",
+  "description": "Foolproof is a type-checking and error-detection helpers library. Version 0.0.6-beta is an important update. Please review the readme usage instructions.",
   "main": "./foolproof.js",
   "repository": {
     "type": "git",

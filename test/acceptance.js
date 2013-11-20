@@ -7,20 +7,21 @@ var newThing = new Thing()
 
 
 ;(function(){
-  require('../foolproof')()
+  require('../foolproof').extend(root)
 
 
   /**
    *
    */
   describe('Helpers',function(){
-    it('Created expected methods in this context',function(){
+    it('created expected methods in this context',function(){
 
-      expect( fSystemLogger ).to.be.an( 'object' )
-      expect( fSystemLogger.use ).to.be.an( 'function' )
-      expect( fSystemLogger.epicFail ).to.be.anu 'function' )e
+      expect( systemLogger ).to.be.an( 'object' )
+      expect( systemLogger ).to.have.property( 'use' )
+      expect( systemLogger ).to.have.property( 'epicFail' )
       expect( ƒ ).to.be.a( 'function' )
       expect( E ).to.be.a( 'function' )
+      expect( U ).to.be.a( 'function' )
       expect( failWhen ).to.be.a( 'function' )
 
       expect( inArray ).to.be.a( 'function' )
@@ -47,24 +48,99 @@ var newThing = new Thing()
 
       expect( standardizePath ).to.be.a( 'function' )
       expect( isValidPath ).to.be.a( 'function' )
-      expect( urlParser ).to.be.a( 'function' )
-      expect( isFolder ).to.be.a( 'function' )
-      expect( isFile ).to.be.a( 'function' )
-      expect( filesHere ).to.be.a( 'function' )
+      expect( urlParse ).to.be.a( 'function' )
+      expect( isFolderSync ).to.be.a( 'function' )
+      expect( isFileSync ).to.be.a( 'function' )
+      expect( filesHereSync ).to.be.a( 'function' )
       expect( formPath ).to.be.a( 'function' )
       expect( fileName ).to.be.a( 'function' )
       /*
       */
     })
+    it('methods are immutable',function(){
+
+      systemLogger = null
+      expect( systemLogger ).to.be.an('object')
+      expect( systemLogger ).to.have.property('use')
+      expect( systemLogger ).to.have.property('epicFail')
+      ƒ = null
+      expect( ƒ ).to.be.an('function')
+      E = null
+      expect( E ).to.be.an('function')
+      U = null
+      expect( U ).to.be.an('function')
+      failWhen = null
+      expect( failWhen ).to.be.an('function')
+
+      inArray = null
+      expect( inArray ).to.be.an('function')
+      typeOf = null
+      expect( typeOf ).to.be.an('function')
+      isType = null
+      expect( isType ).to.be.an('function')
+
+      isFunction = null
+      expect( isFunction ).to.be.an('function')
+      isObject = null
+      expect( isObject ).to.be.an('function')
+      isString = null
+      expect( isString ).to.be.an('function')
+      isRegex = null
+      expect( isRegex ).to.be.an('function')
+      isArray = null
+      expect( isArray ).to.be.an('function')
+      isNull = null
+      expect( isNull ).to.be.an('function')
+      isNumber = null
+      expect( isNumber ).to.be.an('function')
+      isTruthy = null
+      expect( isTruthy ).to.be.an('function')
+      isFalsey = null
+      expect( isFalsey ).to.be.an('function')
+
+      notFunction = null
+      expect( notFunction ).to.be.an('function')
+      notObject = null
+      expect( notObject ).to.be.an('function')
+      notString = null
+      expect( notString ).to.be.an('function')
+      notRegex = null
+      expect( notRegex ).to.be.an('function')
+      notArray = null
+      expect( notArray ).to.be.an('function')
+      notNull = null
+      expect( notNull ).to.be.an('function')
+      notNumber = null
+      expect( notNumber ).to.be.an('function')
+
+      standardizePath = null
+      expect( standardizePath ).to.be.an('function')
+      isValidPath = null
+      expect( isValidPath ).to.be.an('function')
+      urlParse = null
+      expect( urlParse ).to.be.an('function')
+      isFolderSync = null
+      expect( isFolderSync ).to.be.an('function')
+      isFileSync = null
+      expect( isFileSync ).to.be.an('function')
+      filesHereSync = null
+      expect( filesHereSync ).to.be.an('function')
+      formPath = null
+      expect( formPath ).to.be.an('function')
+      fileName = null
+      expect( fileName ).to.be.an('function')
+      /*
+      */
+    })
   })
 
-  describe('fSystemLogger',function(){
-    it('Exists as an object',function(){
-      expect( fSystemLogger ).to.be.an('object')
+  describe('systemLogger',function(){
+    it('exists as an object',function(){
+      expect( systemLogger ).to.be.an('object')
     })
-    it('Has expected methods, use() and epicFail()',function(){
-      expect( fSystemLogger ).to.have.property( 'use' )
-      expect( fSystemLogger ).to.have.property( 'epicFail' )
+    it('has expected methods, use() and epicFail()',function(){
+      expect( systemLogger ).to.have.property( 'use' )
+      expect( systemLogger ).to.have.property( 'epicFail' )
     })
   })
 
@@ -76,7 +152,7 @@ var newThing = new Thing()
   describe('ƒ(typeof var), a fail-fast method',function(){
     it('can properly detect, handle, and throw reference errors',function(){
 
-      fSystemLogger.use(function(){
+      systemLogger.use(function(){
         throw new ReferenceError()
       })
 
@@ -101,7 +177,7 @@ var newThing = new Thing()
         done()
       }
 
-      fSystemLogger.use(customErrorHandler)
+      systemLogger.use(customErrorHandler)
       expect( ƒ(typeof whatever, msg) ).to.be( false )
     })
   })
@@ -112,14 +188,14 @@ var newThing = new Thing()
    *
    */
   describe('U(typeof var), true when undefined',function(){
-    it('Evaluates to true when expected',function(){
+    it('evaluates to true when expected',function(){
       expect( U(typeof whatever) ).to.be( true )
       expect( U(typeof undefined) ).to.be( true )
       expect( U(typeof void 0) ).to.be( true )
       expect( U('undefined') ).to.be( true )
     })
-    it('Evaluates to false when expected',function(){
-      expect( U(typeof fSystemLogger) ).to.be( false )
+    it('evaluates to false when expected',function(){
+      expect( U(typeof systemLogger) ).to.be( false )
       expect( U(typeof new RegExp('')) ).to.be( false )
       expect( U(typeof /^.$/g) ).to.be( false )
       expect( U(typeof E) ).to.be( false )
@@ -140,7 +216,7 @@ var newThing = new Thing()
   describe('failWhen(), a fail-fast method',function(){
     it('Properly detect, handle, and throw reference errors',function(){
 
-      fSystemLogger.use(function(){
+      systemLogger.use(function(){
         throw new ReferenceError()
       })
 
@@ -175,14 +251,14 @@ var newThing = new Thing()
         done()
       }
 
-      fSystemLogger.use(customErrorHandler)
+      systemLogger.use(customErrorHandler)
       expect( failWhen( U(typeof whatever), msg) ).to.be( false )
     })
 
     var msg = 'Send this out, expect() to get it back'
 
     it('Throws whatever error object it is given',function(done){
-      fSystemLogger.use(function (err) {
+      systemLogger.use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
         expect( err.message ).to.be( msg )
@@ -191,7 +267,7 @@ var newThing = new Thing()
       expect( failWhen( U(typeof whatever), msg, 1, ReferenceError) ).to.be( false )
 
       function go2(){
-        fSystemLogger.use(function (err) {
+        systemLogger.use(function (err) {
           expect( err ).to.be.a( SyntaxError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -201,7 +277,7 @@ var newThing = new Thing()
       }
 
       function go3(){
-        fSystemLogger.use(function (err) {
+        systemLogger.use(function (err) {
           expect( err ).to.be.a( EvalError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -210,7 +286,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, EvalError) ).to.be( false )
       }
       function go4(){
-        fSystemLogger.use(function (err) {
+        systemLogger.use(function (err) {
           expect( err ).to.be.a( RangeError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -219,7 +295,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, RangeError) ).to.be( false )
       }
       function go5(){
-        fSystemLogger.use(function (err) {
+        systemLogger.use(function (err) {
           expect( err ).to.be.a( TypeError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -228,7 +304,7 @@ var newThing = new Thing()
         expect( failWhen( U(typeof whatever), msg, 1, TypeError) ).to.be( false )
       }
       function go6(){
-        fSystemLogger.use(function (err) {
+        systemLogger.use(function (err) {
           expect( err ).to.be.a( URIError )
           expect( err.lvl ).to.be( 1 )
           expect( err.message ).to.be( msg )
@@ -707,7 +783,7 @@ var newThing = new Thing()
       expect( standardizePath('///stuff///places//////things///') ).to.be('stuff/places/things/')
     })
     it('Returns false and trips the error reporting system',function(done){
-      fSystemLogger.Use(function (err) {
+      systemLogger.use(function (err) {
         expect( err ).to.be.a( ReferenceError )
         expect( err.lvl ).to.be( 1 )
         expect( err.message ).to.be('Path string is invalid.')
@@ -738,22 +814,22 @@ var newThing = new Thing()
   /**
    *
    */
-  describe('urlParser',function(){
+  describe('urlParse',function(){
     it('Throws error on invalid input, error has expected type and message',function(){
 
       function customErrorHandler (err) {
         expect( err ).to.be.a( ReferenceError )
-        expect( err.message ).to.be( 'urlParser() received invalid arguments' )
+        expect( err.message ).to.be( 'urlParse() received invalid arguments' )
         done()
       }
 
-      fSystemLogger.Use(customErrorHandler)
-      expect( function(){ urlParser(undefined, undefined) } ).to.throwError()
+      systemLogger.use(customErrorHandler)
+      expect( function(){ urlParse(undefined, undefined) } ).to.throwError()
     })
     it("Returns empty array when pattern and string don't match",function(){
       // var path = standardizePath('a/b/asdf/c')
       var path = 'a/b/asdf/c' // no trailing slash.
-      var args = urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path) // has trailing slash.
+      var args = urlParse(/^a\/b\/([^\/]*)\/c\/$/g, path) // has trailing slash.
 
       expect( args ).to.have.length(0)
       expect( args ).to.be.an(Array)
@@ -761,12 +837,12 @@ var newThing = new Thing()
     it('Returns array for capture groups',function(){
 
       var path1 = standardizePath('a/b/asdf/c')
-      expect( urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.be.an(Array)
-      expect( urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.have.length(1)
-      expect( urlParser(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.contain('asdf')
+      expect( urlParse(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.be.an(Array)
+      expect( urlParse(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.have.length(1)
+      expect( urlParse(/^a\/b\/([^\/]*)\/c\/$/g, path1) ).to.contain('asdf')
 
       var path2 = standardizePath('a/b/asdf/1234/c')
-      var args2 = urlParser(/^a\/b\/([^\/]*)\/([^\/]*)\/c\/$/g, path2)
+      var args2 = urlParse(/^a\/b\/([^\/]*)\/([^\/]*)\/c\/$/g, path2)
       expect( args2 ).to.have.length(2)
       expect( args2 ).to.contain('asdf')
       expect( args2 ).to.contain('1234')
@@ -774,7 +850,7 @@ var newThing = new Thing()
     it('Returns object with expected params, if params are provided',function(){
       
       var path = standardizePath('a/5/asdf/c')
-      var args = urlParser(/^a\/([^\/]*)\/([^\/]*)\/c\/$/g, path, ['index','name'])
+      var args = urlParse(/^a\/([^\/]*)\/([^\/]*)\/c\/$/g, path, ['index','name'])
 
       expect( args ).to.be.an(Object)
       expect( args ).to.have.property('name')
@@ -790,22 +866,22 @@ var newThing = new Thing()
   /**
    *
    */
-  describe('isFolder',function(){
+  describe('isFolderSync',function(){
     it('Returns true for folder names in the current base directory',function(){
-      expect( isFolder('test') ).to.be(true)
-      expect( isFolder('node_modules') ).to.be(true)
+      expect( isFolderSync('test/testFolder') ).to.be(true)
+      expect( isFolderSync('test') ).to.be(true)
     })
     it('Returns true for folders in a relative path from the base directory',function(){
-      expect( isFolder('../foolproof') ).to.be(true)
+      expect( isFolderSync('../foolproof.js') ).to.be(true)
     })
     it('Returns false for files in the base directory',function(){
-      expect( isFolder('foolproof.js') ).to.be(false)
+      expect( isFolderSync('foolproof.js') ).to.be(false)
     })
     it('Returns true for folders listed by absolute path',function(){
-      expect( isFolder(__dirname) ).to.be(true)
+      expect( isFolderSync(__dirname) ).to.be(true)
     })
     it('Throws an error if you try ~',function(){
-      expect(function(){ isFolder('~') }).to.throwError()
+      expect(function(){ isFolderSync('~') }).to.throwError()
     })
   })
 
@@ -814,15 +890,15 @@ var newThing = new Thing()
   /**
    *
    */
-  describe('isFile',function(){
+  describe('isFileSync',function(){
     it('Returns true for files in the base directory',function(){
-      expect( isFile('foolproof.js') ).to.be(true)
+      expect( isFileSync('foolproof.js') ).to.be(true)
     })
     it('Returns true for files in sub-directories, by relative path',function(){
-      expect( isFile('test/mocha.opts') ).to.be(true)
+      expect( isFileSync('test/mocha.opts') ).to.be(true)
     })
     it('Returns true for files listed by absolute path',function(){
-      expect( isFile('foolproof.js') ).to.be(true)
+      expect( isFileSync('foolproof.js') ).to.be(true)
     })
   })
 
@@ -831,10 +907,10 @@ var newThing = new Thing()
   /**
    *
    */
-  describe('filesHere',function(){
+  describe('filesHereSync',function(){
     it('Returns an array, containing mocha.opts',function(){
-      expect( filesHere(__dirname) ).to.be.an(Array)
-      expect( filesHere(__dirname) ).to.contain('mocha.opts')
+      expect( filesHereSync(__dirname) ).to.be.an(Array)
+      expect( filesHereSync(__dirname) ).to.contain('mocha.opts')
     })
   })
 
