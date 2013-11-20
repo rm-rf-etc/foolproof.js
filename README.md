@@ -19,7 +19,7 @@ and allow for graceful handling of unexpected conditions.
 
 ## Functions:
 <dl>
-    <dt>SystemLogger</dt>
+    <dt>systemLogger</dt>
     <dd>Has use() and epicFail() methods, allows setting of a custom error handler.</dd>
 
     <dt>E(typeof var)</dt>
