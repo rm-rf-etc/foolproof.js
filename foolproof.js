@@ -39,9 +39,9 @@ var systemLogger = function(){
 
         var err
         if ( E(typeof typ) )
-        err = new typ(msg)
+            err = new typ(msg)
         else
-        err = new ReferenceError(msg)
+            err = new ReferenceError(msg)
 
         err.lvl = lvl || 1
 
