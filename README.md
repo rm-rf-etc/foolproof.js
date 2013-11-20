@@ -18,27 +18,37 @@ native language features for node applications, simplify type checking,
 and allow for graceful handling of unexpected conditions.
 
 ## Functions:
+<dl>
+    <dt>SystemLogger</dt>
+    <dd>Has use() and epicFail() methods, allows setting of a custom error handler.</dd>
 
-SystemLogger
-    Has use() and epicFail() methods, allows setting of a custom error handler.
-E(typeof var)
-    A shorthand for (typeof var !== 'undefined')
-U(typeof var)
-    A shorthand for (typeof var === 'undefined')
-failWhen(condition, message, level, errorType)
-    A fail-fast method, invokes SystemLogger.EpicFail() when condition is true.
-ƒ(typeof var)
-    A fail-fast method, always use with typeof.
-findProperty(obj, 'parent.child.property')
-    Access any properties/sub-properties of obj using dot notation (false if no match).
-removeItem(needle, haystack):
-    Modifies haystack, removing the item which strictly matches needle.
-concatUnique(existing, additional)
-    Adds only unique items from additional to existing.
-inArray(needle, haystack)
-    True if haystack strictly contains needle.
-objExtend(to, from)
-    Reimplementation of jQuery extend method, minus support for extending jQuery itself.
+    <dt>E(typeof var)</dt>
+    <dd>A shorthand for (typeof var !== 'undefined')</dd>
+
+    <dt>U(typeof var)</dt>
+    <dd>A shorthand for (typeof var === 'undefined')</dd>
+
+    <dt>failWhen(condition, message, level, errorType)</dt>
+    <dd>A fail-fast method, invokes SystemLogger.EpicFail() when condition is true.</dd>
+
+    <dt>ƒ(typeof var)</dt>
+    <dd>A fail-fast method, always use with typeof.</dd>
+
+    <dt>findProperty(obj, 'parent.child.property')</dt>
+    <dd>Access any properties/sub-properties of obj using dot notation (false if no match).</dd>
+
+    <dt>removeItem(needle, haystack)</dt>
+    <dd>Modifies haystack, removing the item which strictly matches needle.</dd>
+
+    <dt>concatUnique(existing, additional)</dt>
+    <dd>Adds only unique items from additional to existing.</dd>
+
+    <dt>inArray(needle, haystack)</dt>
+    <dd>True if haystack strictly contains needle.</dd>
+
+    <dt>objExtend(to, from)</dt>
+    <dd>Reimplementation of jQuery extend method, minus support for extending jQuery itself.</dd>
+</dl>
 
 Complete list of methods:
 ```
