@@ -670,9 +670,8 @@ function objExtend (obj1, obj2)
     }
 
     // Handle case when target is a string or something (possible in deep copy)
-    if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+    if (notObject(target))
         target = {}
-    }
 
 
     if ( arguments.length > 1 ) {
